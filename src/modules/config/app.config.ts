@@ -1,4 +1,6 @@
-type PostgresConfig = {
+import { Algorithm, Secret } from "jsonwebtoken";
+
+type DatabaseConfig = {
   host: string;
   port: number;
   database: string;
@@ -8,5 +10,6 @@ type PostgresConfig = {
 };
 
 export type AppConfig = {
-  postgres: PostgresConfig;
+  env: string;
+  postgres: DatabaseConfig;
 };

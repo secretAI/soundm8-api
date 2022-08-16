@@ -1,8 +1,7 @@
-import { HttpCode, HttpStatus, Injectable } from '@nestjs/common';
+import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { ConfigService as NestConfigService } from '@nestjs/config';
-import { KnownEnvironmentVariables } from './env/variables';
+import { KnownEnvironmentVariables } from '../../lib/known-variables';
 import { AppConfig } from './app.config';
-import { ApplicationError } from 'src/utils/error/error';
 
 @Injectable()
 export class ConfigService {
@@ -10,14 +9,14 @@ export class ConfigService {
     private readonly _config: NestConfigService<KnownEnvironmentVariables>,
   ) {}
 
-  private getEnvironmentVariables(
+  private getEnvironmentVariable(
     key: keyof KnownEnvironmentVariables,
   ): string {
     const value = this._config.get(key);
     if(!value) {
-      throw new ApplicationError(
+      throw new HttpException(
+        `* Variable ${key} not found in .env`,
         HttpStatus.NOT_FOUND, 
-        `* Variable ${key} not found in .env`
       );
     }
 
@@ -26,14 +25,15 @@ export class ConfigService {
 
   public get config(): AppConfig {
     return {
+      env: this.getEnvironmentVariable('NODE_ENV'),
       postgres: {
-        host: this.getEnvironmentVariables('DB_HOST'),
-        port: Number(this.getEnvironmentVariables('DB_PORT')),
-        database: this.getEnvironmentVariables('DB_DATABASE'),
-        username: this.getEnvironmentVariables('DB_USER'),
-        password: this.getEnvironmentVariables('DB_PASS'),
-        driver: this.getEnvironmentVariables('DB_DRIVER')
-      }
+        host: this.getEnvironmentVariable('DB_HOST'),
+        port: Number(this.getEnvironmentVariable('DB_PORT')),
+        database: this.getEnvironmentVariable('DB_DATABASE'),
+        username: this.getEnvironmentVariable('DB_USER'),
+        password: this.getEnvironmentVariable('DB_PASS'),
+        driver: this.getEnvironmentVariable('DB_DRIVER')
+      },
     };
   }
 }

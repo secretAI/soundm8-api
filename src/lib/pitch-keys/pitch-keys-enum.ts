@@ -1,0 +1,35 @@
+export enum MajorPitchKeys {
+  CB = 'Cb',
+  GB = 'Gb',
+  DB = 'Db',
+  AB = 'Ab',
+  EB = 'Eb',
+  BB = 'Bb', 
+  F = 'F',
+  C = 'C',
+  G = 'G',
+  D = 'D',
+  A = 'A',
+  E = 'E',
+  B = 'B',
+  F_SHARP = 'F#',
+  C_SHARP = 'C#'
+};
+
+export enum MinorPitchKeys {
+  AB = 'Ab',
+  EB = 'Eb',
+  BB = 'Bb',
+  F = 'F',
+  C = 'C',
+  G = 'G',
+  D = 'D',
+  A = 'A',
+  E = 'E',
+  B = 'B',
+  F_SHARP = 'F#',
+  C_SHARP = 'C#',
+  G_SHARP = 'G#',
+  D_SHARP = 'D#',
+  A_SHARP = 'A#',
+};

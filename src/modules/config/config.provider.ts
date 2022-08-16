@@ -7,5 +7,5 @@ export const ConfigProvider: FactoryProvider = {
   useFactory: (config: NestConfigService): ConfigService => {
     return new ConfigService(config);
   },
-  inject: [NestConfigService],
+  inject: [ NestConfigService ],
 };

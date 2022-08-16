@@ -7,7 +7,7 @@ import { TypeOrmConfig } from './typeorm.config';
   imports: [
     NestTypeOrmModule.forRootAsync({
       useClass: TypeOrmConfig,
-      imports: [ConfigModule],
+      imports: [ ConfigModule ],
     }),
   ],
 })

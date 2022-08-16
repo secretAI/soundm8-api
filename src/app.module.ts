@@ -1,12 +1,25 @@
 import { Module } from '@nestjs/common';
-import { AppController } from './app.controller';
-import { AppService } from './app.service';
+import { OrderModule } from './domain/orders';
+import { UserModule } from './domain/users';
 import { ConfigModule } from './modules/config';
 import { TypeOrmModule } from './modules/typeorm';
+import { 
+  HttpErrorFilterProvider, 
+  TypeOrmErrorFilterProvider 
+} from './shared/filters';
+import { LoggingInterceptorProvider } from './shared/logging';
 
 @Module({
-  imports: [ ConfigModule, TypeOrmModule ],
-  controllers: [ AppController ],
-  providers: [ AppService ],
+  imports: [ 
+    ConfigModule, 
+    TypeOrmModule,
+    OrderModule,
+    UserModule
+  ],
+  providers: [ 
+    HttpErrorFilterProvider,
+    TypeOrmErrorFilterProvider,
+    LoggingInterceptorProvider,
+  ],
 })
 export class AppModule {}

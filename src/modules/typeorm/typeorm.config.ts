@@ -24,7 +24,7 @@ export class TypeOrmConfig implements TypeOrmOptionsFactory {
       host,
       port,
       type: driver as TypeOrmModuleOptions['driver'],
-      synchronize: this._service.config.env == 'development',
+      synchronize: this._service.config.env == 'development', /* false for production */
       keepConnectionAlive: false,
       logging: false,
       applicationName: 'soundm8',

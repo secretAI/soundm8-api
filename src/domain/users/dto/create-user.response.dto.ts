@@ -13,7 +13,7 @@ import { UserEntity } from "src/database/entities";
 export class UserResponseDto {
   constructor(data: UserEntity) {
     this.id = data.id;
-    this.email = data.email;
+    this.username = data.username;
     this.telegram_id = data.telegram_id;
     this.created_at = data.created_at;
   }
@@ -24,7 +24,7 @@ export class UserResponseDto {
   @IsNotEmpty()
   @Length(6, 48)
   @IsEmail()
-  public email: string;
+  public username: string;
 
   @IsOptional()
   @IsString()

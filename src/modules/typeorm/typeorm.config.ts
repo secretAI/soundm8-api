@@ -13,9 +13,16 @@ export class TypeOrmConfig implements TypeOrmOptionsFactory {
   constructor(private readonly _service: ConfigService) {}
 
   public createTypeOrmOptions(): TypeOrmModuleOptions {
-    const { host, port, database, username, password, driver } =
-      this._service.config.postgres;
+    const { 
+      host, 
+      port, 
+      database, 
+      username, 
+      password, 
+      driver 
+    } = this._service.config.postgres;
     this._logger.verbose('TypeOrm options generated');
+    const { env } = this._service.config; 
 
     return {
       database,
@@ -24,7 +31,7 @@ export class TypeOrmConfig implements TypeOrmOptionsFactory {
       host,
       port,
       type: driver as TypeOrmModuleOptions['driver'],
-      synchronize: this._service.config.env == 'development', /* false for production */
+      synchronize: env == 'development', /* false for production */
       keepConnectionAlive: false,
       logging: false,
       applicationName: 'soundm8',

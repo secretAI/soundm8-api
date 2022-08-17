@@ -1,5 +1,5 @@
 export interface ICreateUserData {
-  email: string;
-  pass: string;
-  telegram_id?: string;
+  username: string;
+  inviteCode: string;
+  telegram_id: string;
 };

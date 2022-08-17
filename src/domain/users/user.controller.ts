@@ -10,17 +10,15 @@ export class UserController {
   @Get('/')
   public async findAll(): Promise<UserResponseDto[]> {
     const response: UserEntity[] = await this._service.findAll();
-    console.log(response);
-    
 
     return response.map(user => new UserResponseDto(user));
   }
 
   @Get('/:id')
   public async findById(@Param('id') id: string): Promise<UserResponseDto> {
-    const response = await this._service.findById(id);
+    const response: UserEntity = await this._service.findById(id);
 
-    return new UserResponseDto(response)
+    return new UserResponseDto(response);
   }
 
   @Post('/new')

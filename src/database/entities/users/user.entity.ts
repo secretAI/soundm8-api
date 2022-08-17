@@ -4,6 +4,7 @@ import {
   IsHash, 
   IsNotEmpty, 
   IsOptional, 
+  IsString, 
   IsUUID, 
   Length, 
   UUIDVersion 
@@ -30,28 +31,33 @@ export class UserEntity {
   })
   public readonly id: string;
 
-  @JoinColumn({
-    name: 'email',
-    referencedColumnName: 'user_email',
-  })
   @IsNotEmpty()
-  @IsEmail()
+  @IsString()
   @Length(6, 48)
   @Index('user_email_index', ['email'])
   @Column('varchar', {
     name: 'email',
     nullable: false,
-    unique: true
+    unique: false
   })
-  public email: string;
+  public username: string;
 
   @IsNotEmpty()
-  @IsHash('sha256')
+  @Length(6, 12)
+  @Column('varchar', {
+    name: 'telegram_id',
+    nullable: true,
+    unique: true
+  })
+  public telegram_id: string;
+
+  @IsNotEmpty()
+  @IsString()
   @Column('text', {
-    name: 'pass',
+    name: 'invite_code',
     nullable: false,
   })
-  public pass: string;
+  public invite_code: string;
 
   @IsDate()
   @CreateDateColumn({
@@ -60,12 +66,6 @@ export class UserEntity {
   })
   public created_at: Date;
 
-  @IsOptional()
-  @Length(6, 12)
-  @Column('varchar', {
-    name: 'telegram_id',
-    nullable: true,
-    unique: true
-  })
-  public telegram_id: string;
+  /* add order instance */
+  /* add invite_code instance */
 };

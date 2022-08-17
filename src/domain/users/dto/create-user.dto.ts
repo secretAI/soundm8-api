@@ -9,15 +9,15 @@ import {
 export class CreateUserDto {
   @IsNotEmpty()
   @IsEmail()
-  public email: string;
+  public username: string;
 
   @IsNotEmpty()
   @IsString()
   @Length(6, 36)
-  public pass: string;
+  public inviteCode: string;
 
   @IsOptional()
   @IsString()
   @Length(6, 12)
-  public telegram_id?: string;
+  public telegram_id: string;
 }

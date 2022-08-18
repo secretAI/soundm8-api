@@ -15,8 +15,12 @@ import {
   Entity, 
   Index, 
   JoinColumn, 
+  OneToMany, 
+  OneToOne, 
   PrimaryColumn, 
 } from "typeorm";
+import { InviteCodeEntity } from "../invite-codes";
+import { OrderEntity } from "../orders";
 
 @Entity('users', {
   orderBy: {
@@ -34,7 +38,6 @@ export class UserEntity {
   @IsNotEmpty()
   @IsString()
   @Length(6, 48)
-  @Index('user_email_index', ['email'])
   @Column('varchar', {
     name: 'email',
     nullable: false,
@@ -44,20 +47,13 @@ export class UserEntity {
 
   @IsNotEmpty()
   @Length(6, 12)
+  @Index('user_telegram_id_index', ['telegram_id'])
   @Column('varchar', {
     name: 'telegram_id',
     nullable: true,
     unique: true
   })
   public telegram_id: string;
-
-  @IsNotEmpty()
-  @IsString()
-  @Column('text', {
-    name: 'invite_code',
-    nullable: false,
-  })
-  public invite_code: string;
 
   @IsDate()
   @CreateDateColumn({
@@ -66,6 +62,14 @@ export class UserEntity {
   })
   public created_at: Date;
 
-  /* add order instance */
-  /* add invite_code instance */
+  /* relations */
+  @OneToOne(() => InviteCodeEntity, code => code.user)
+  @JoinColumn()
+  public invite_code: string;
+
+  @OneToMany(
+    () => OrderEntity,
+    order => order.user,
+  )
+  public orders: OrderEntity[];
 };

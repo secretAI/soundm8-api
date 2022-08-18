@@ -1,7 +1,6 @@
 import { 
   IsBoolean, 
   IsDate, 
-  IsInstance, 
   IsString, 
   IsUUID, 
   Length, 
@@ -11,8 +10,11 @@ import {
   Column, 
   CreateDateColumn, 
   Entity, 
+  JoinColumn, 
+  OneToOne, 
   PrimaryColumn 
 } from "typeorm";
+import { UserEntity } from "../users";
 
 @Entity('invite_codes')
 export class InviteCodeEntity {
@@ -24,6 +26,7 @@ export class InviteCodeEntity {
   public readonly id: string;
 
   @IsString()
+  @Length(15, 15)
   @Column('text', {
     name: 'body',
     unique: true
@@ -39,10 +42,17 @@ export class InviteCodeEntity {
 
   @IsBoolean()
   @Column('bool', {
-    name: 'created_at',
-    default: () => 'now()::timestamp'
+    name: 'is_used',
+    default: false
   })
   public is_used: boolean;
 
-  /* add user instance */
+  /* relations */
+  @OneToOne(
+    () => UserEntity, 
+    (user) => user.invite_code,
+    { onDelete: 'CASCADE', onUpdate: 'CASCADE' }
+  )
+  @JoinColumn()
+  user: UserEntity;
 }

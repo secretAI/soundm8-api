@@ -14,7 +14,7 @@ export class OrderService {
     @InjectRepository(OrderEntity) private _orderRepository: Repository<OrderEntity>,
   ) {}
 
-  public createOrder(data: ICreateOrderData) {
+  public create(data: ICreateOrderData) {
     return this._orderRepository.save(data);
   }
 }

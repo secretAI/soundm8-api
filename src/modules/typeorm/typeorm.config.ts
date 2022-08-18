@@ -1,7 +1,10 @@
 import { Injectable, Logger } from '@nestjs/common';
 import { TypeOrmModuleOptions, TypeOrmOptionsFactory } from '@nestjs/typeorm';
-import { UserEntity } from '../../database/entities/';
-import { OrderEntity } from '../../database/entities/'
+import { 
+  InviteCodeEntity, 
+  UserEntity, 
+  OrderEntity 
+} from '../../database/entities/';
 import { ConfigService } from '../config';
 
 @Injectable()
@@ -37,7 +40,8 @@ export class TypeOrmConfig implements TypeOrmOptionsFactory {
       applicationName: 'soundm8',
       entities: [
         OrderEntity,
-        UserEntity
+        UserEntity,
+        InviteCodeEntity
       ]
     };
   }

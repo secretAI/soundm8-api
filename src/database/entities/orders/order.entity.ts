@@ -18,13 +18,11 @@ import {
   CreateDateColumn, 
   Entity, 
   Index, 
-  JoinColumn, 
   ManyToOne, 
   PrimaryColumn,
-  PrimaryGeneratedColumn
 } from "typeorm";
 import { UserEntity } from "../";
-import { PitchKeyList } from "../../../lib/";
+import { PitchKeyList } from "../../../lib";
 
 @Entity('orders', {
   orderBy: { 
@@ -75,27 +73,18 @@ export class OrderEntity {
   })
   public created_at: Date;
 
-  // @IsNotEmpty()
-  // @IsEmail()
-  // @Length(6, 48)
-  // @Column('varchar', {
-  //   name: 'user_email',
-  //   nullable: false
-  // })
-  // @ManyToOne(() => UserEntity, (user) => user.email, {
-  //   onDelete: 'CASCADE',
-  //   onUpdate: 'CASCADE'
-  // })
-  // @JoinColumn({
-  //   name: 'user_email',
-  //   referencedColumnName: 'email'
-  // })
-  // public user: UserEntity;
-
   @IsBoolean()
   @Column('bool', {
-    name: 'completed',
+    name: 'is_completed',
     default: false
   })
-  public completed: boolean;
+  public is_completed: boolean;
+
+  /* relations */
+  @ManyToOne(
+    () => UserEntity, 
+    user => user.orders,
+    { onDelete: 'SET NULL', onUpdate: 'CASCADE' }
+  )
+  public user: UserEntity;
 };

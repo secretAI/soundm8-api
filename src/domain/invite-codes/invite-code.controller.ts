@@ -1,15 +1,18 @@
 import { Controller, Get } from "@nestjs/common";
 import { InviteCodeEntity } from "src/database/entities";
+import { RobotService } from "src/modules/robot/robot.service";
 import { InviteCodeResponseDto } from "./dto";
 import { InviteCodeService } from "./invite-code.service";
 
 
 @Controller('/codes')
 export class InviteCodeController {
-  constructor(private readonly _inviteCodeService: InviteCodeService) {}
+  constructor(
+    private readonly _inviteCodeService: InviteCodeService,
+    ) {}
 
   @Get('/generate')
-  public async generate(): Promise<InviteCodeResponseDto> {
+  public async generate(): Promise<InviteCodeResponseDto> {   
     const response: InviteCodeEntity = await this._inviteCodeService.generate();
 
     return new InviteCodeResponseDto(response);

@@ -12,4 +12,6 @@ export type KnownEnvironmentVariables = {
   JWT_SECRET: Secret|string;
   JWT_ALGORITHM: Algorithm|string;
   SALT_ROUNDS: number;
+  /* robot */
+  BOT_TOKEN: string;
 };

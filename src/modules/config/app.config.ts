@@ -9,7 +9,12 @@ type DatabaseConfig = {
   driver: string;
 };
 
+type RobotConfig = {
+  token: string;
+}
+
 export type AppConfig = {
   env: string;
   postgres: DatabaseConfig;
+  robot: RobotConfig;
 };

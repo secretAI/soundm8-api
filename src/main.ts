@@ -8,6 +8,6 @@ const port = process.env.APP_PORT;
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
   await app.listen(port);
-  console.log(`(￣▽￣)ノ\nhttp://localhost:${port}/`);
+  console.log(`(￣▽￣)ノ\nAPI -> http://localhost:${port}/`);
 };
 bootstrap();

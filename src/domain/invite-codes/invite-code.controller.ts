@@ -1,6 +1,5 @@
 import { Controller, Get } from "@nestjs/common";
 import { InviteCodeEntity } from "src/database/entities";
-import { RobotService } from "src/modules/robot/robot.service";
 import { InviteCodeResponseDto } from "./dto";
 import { InviteCodeService } from "./invite-code.service";
 

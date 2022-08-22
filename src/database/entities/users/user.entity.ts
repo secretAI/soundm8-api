@@ -48,12 +48,12 @@ export class UserEntity {
   @IsNotEmpty()
   @Length(6, 12)
   @Index('user_telegram_id_index', ['telegram_id'])
-  @Column('varchar', {
+  @Column('int', {
     name: 'telegram_id',
     nullable: true,
     unique: true
   })
-  public telegram_id: string;
+  public telegram_id: number;
 
   @IsDate()
   @CreateDateColumn({
@@ -64,8 +64,10 @@ export class UserEntity {
 
   /* relations */
   @OneToOne(() => InviteCodeEntity, code => code.user)
-  @JoinColumn()
-  public invite_code: string;
+  @JoinColumn({
+    name: 'invite_code_id'
+  })
+  public invite_code: InviteCodeEntity;
 
   @OneToMany(
     () => OrderEntity,

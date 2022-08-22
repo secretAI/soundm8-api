@@ -29,7 +29,7 @@ export class UserResponseDto {
   @IsOptional()
   @IsString()
   @Length(6, 12)
-  public telegram_id?: string;
+  public telegram_id: number;
 
   @IsNotEmpty()
   @IsDate()

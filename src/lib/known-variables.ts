@@ -1,5 +1,3 @@
-import { Algorithm, Secret } from "jsonwebtoken";
-
 export type KnownEnvironmentVariables = {
   NODE_ENV: string;
   DB_HOST: string;
@@ -9,9 +7,7 @@ export type KnownEnvironmentVariables = {
   DB_PASS: string;
   DB_DRIVER: string;
   /* auth */
-  JWT_SECRET: Secret|string;
-  JWT_ALGORITHM: Algorithm|string;
+  JWT_SECRET: string;
+  JWT_ALGORITHM: string;
   SALT_ROUNDS: number;
-  /* robot */
-  BOT_TOKEN: string;
 };

@@ -10,9 +10,7 @@ import {
 } from "@nestjs/common";
 import { Request } from "express";
 import { Observable, tap } from "rxjs";
-import { Telegraf } from 'telegraf';
-import { TelegrafRequest } from "./types/telegraf-request.interface";
-
+import { TelegrafRequest } from "./types";
 
 @Injectable()
 export class LoggingInterceptor implements NestInterceptor {

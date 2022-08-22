@@ -1,4 +1,4 @@
-import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
+import { HttpException, HttpStatus, Injectable, NotFoundException } from '@nestjs/common';
 import { ConfigService as NestConfigService } from '@nestjs/config';
 import { KnownEnvironmentVariables } from '../../lib/known-variables';
 import { AppConfig } from './app.config';
@@ -14,13 +14,10 @@ export class ConfigService {
   ): string {
     const value = this._config.get(key);
     if(!value) {
-      throw new HttpException(
-        `* Variable ${key} not found in .env`,
-        HttpStatus.NOT_FOUND, 
-      );
+      throw new NotFoundException(`* Variable ${key} not found in .env`);
     }
 
-      return value;
+    return value;
   }
 
   public get config(): AppConfig {
@@ -33,9 +30,6 @@ export class ConfigService {
         username: this.getEnvironmentVariable('DB_USER'),
         password: this.getEnvironmentVariable('DB_PASS'),
         driver: this.getEnvironmentVariable('DB_DRIVER')
-      },
-      robot: {
-        token: this.getEnvironmentVariable('BOT_TOKEN')
       }
     };
   }

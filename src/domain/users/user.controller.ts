@@ -14,9 +14,9 @@ export class UserController {
     return response.map(user => new UserResponseDto(user));
   }
 
-  @Get('/:id')
-  public async findById(@Param('id') id: string): Promise<UserResponseDto> {
-    const response: UserEntity = await this._userService.findById(id);
+  @Get('/:name')
+  public async findByName(@Param('name') name: string): Promise<UserResponseDto> {
+    const response: UserEntity = await this._userService.findByName(name);
 
     return new UserResponseDto(response);
   }

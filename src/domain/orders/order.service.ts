@@ -14,7 +14,7 @@ export class OrderService {
     @InjectRepository(OrderEntity) private _orderRepository: Repository<OrderEntity>,
   ) {}
 
-  public create(data: ICreateOrderData) {
-    return this._orderRepository.save(data);
+  public async create(data: ICreateOrderData): Promise<OrderEntity> {
+    return await this._orderRepository.save(data);
   }
 }

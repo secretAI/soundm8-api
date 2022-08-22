@@ -1,4 +1,5 @@
 import { 
+  IsBoolean,
   IsDate,
   IsEmail,
   IsHash, 
@@ -61,6 +62,13 @@ export class UserEntity {
     default: () => 'now()::timestamp'
   })
   public created_at: Date;
+
+  @IsBoolean()
+  @Column('bool', {
+    name: 'is_activated',
+    default: false
+  })
+  public is_activated: boolean;
 
   /* relations */
   @OneToOne(() => InviteCodeEntity, code => code.user)

@@ -1,9 +1,8 @@
 import { Injectable } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
 import { InsertResult, Repository, TableColumn } from "typeorm";
-import { hash, genSalt } from "bcrypt";
 import * as dotenv from "dotenv";
-import { OrderEntity } from "../../database/entities";
+import { OrderEntity } from "src/domain/orders/entity";
 import { ICreateOrderData } from "./types";
 
 dotenv.config()

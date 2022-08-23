@@ -1,10 +1,8 @@
 import { Injectable, Logger } from '@nestjs/common';
 import { TypeOrmModuleOptions, TypeOrmOptionsFactory } from '@nestjs/typeorm';
-import { 
-  InviteCodeEntity, 
-  UserEntity, 
-  OrderEntity 
-} from '../../database/entities/';
+import { InviteCodeEntity } from 'src/domain/invite-codes';
+import { OrderEntity } from 'src/domain/orders';
+import { UserEntity } from 'src/domain/users';
 import { ConfigService } from '../config';
 
 @Injectable()
@@ -24,8 +22,8 @@ export class TypeOrmConfig implements TypeOrmOptionsFactory {
       password, 
       driver 
     } = this._service.config.postgres;
-    this._logger.verbose('TypeOrm options generated');
     const { env } = this._service.config; 
+    this._logger.verbose('TypeOrm options generated');
 
     return {
       database,

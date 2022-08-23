@@ -4,6 +4,7 @@ import {
   IsString, 
   IsUUID, 
   Length, 
+  Matches, 
   UUIDVersion 
 } from "class-validator";
 import { 
@@ -14,7 +15,7 @@ import {
   OneToOne, 
   PrimaryColumn 
 } from "typeorm";
-import { UserEntity } from "../users";
+import { UserEntity } from "../../users";
 
 @Entity('invite_codes')
 export class InviteCodeEntity {
@@ -26,7 +27,7 @@ export class InviteCodeEntity {
   public readonly id: string;
 
   @IsString()
-  @Length(15, 15)
+  @Length(16, 16)
   @Column('text', {
     name: 'body',
     unique: true

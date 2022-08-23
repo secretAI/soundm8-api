@@ -20,8 +20,8 @@ import {
   OneToOne, 
   PrimaryColumn, 
 } from "typeorm";
-import { InviteCodeEntity } from "../invite-codes";
-import { OrderEntity } from "../orders";
+import { InviteCodeEntity } from "../../invite-codes";
+import { OrderEntity } from "../../orders";
 
 @Entity('users', {
   orderBy: {
@@ -40,7 +40,7 @@ export class UserEntity {
   @IsString()
   @Length(6, 48)
   @Column('varchar', {
-    name: 'email',
+    name: 'username',
     nullable: false,
     unique: false
   })
@@ -71,15 +71,18 @@ export class UserEntity {
   public is_activated: boolean;
 
   /* relations */
-  @OneToOne(() => InviteCodeEntity, code => code.user)
+  @OneToOne(() => InviteCodeEntity, code => code.user, {
+    onDelete: 'CASCADE',
+    onUpdate: 'CASCADE'
+  })
   @JoinColumn({
-    name: 'invite_code_id'
+    name: 'invite_code_id',
   })
   public invite_code: InviteCodeEntity;
 
-  @OneToMany(
-    () => OrderEntity,
-    order => order.user,
-  )
+  @OneToMany(() => OrderEntity, order => order.user, {
+    onDelete: 'CASCADE',
+    onUpdate: 'CASCADE'
+  })
   public orders: OrderEntity[];
 };

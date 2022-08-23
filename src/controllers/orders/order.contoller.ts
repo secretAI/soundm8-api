@@ -1,5 +1,5 @@
 import { Body, Controller, Post } from "@nestjs/common";
-import { OrderService } from ".";
+import { OrderService } from "../../domain/orders";
 
 @Controller() /* fix base url */
 export class OrderController {

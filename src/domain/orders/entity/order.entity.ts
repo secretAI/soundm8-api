@@ -1,7 +1,6 @@
 import { 
   IsBoolean,
   IsDate,
-  IsEmail,
   IsFQDN, 
   IsIn, 
   IsInt, 
@@ -21,7 +20,7 @@ import {
   ManyToOne, 
   PrimaryColumn,
 } from "typeorm";
-import { UserEntity } from "../";
+import { UserEntity } from "../../users";
 import { PitchKeyList } from "../../../lib";
 
 @Entity('orders', {

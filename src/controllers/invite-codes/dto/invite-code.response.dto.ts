@@ -1,5 +1,5 @@
 import { IsDate, IsString, IsUUID, Length, UUIDVersion } from "class-validator";
-import { InviteCodeEntity } from "src/database/entities";
+import { InviteCodeEntity } from "src/domain/invite-codes";
 
 export class InviteCodeResponseDto {
   constructor(data: InviteCodeEntity) {

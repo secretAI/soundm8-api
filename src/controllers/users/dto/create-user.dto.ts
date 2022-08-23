@@ -8,7 +8,6 @@ import {
 
 export class CreateUserDto {
   @IsNotEmpty()
-  @IsEmail()
   public username: string;
 
   @IsOptional()

@@ -1,22 +1,61 @@
-import { Inject, Injectable } from "@nestjs/common";
+import { forwardRef, HttpException, HttpStatus, Inject, Injectable } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
-import { InviteCodeEntity, UserEntity } from "src/database/entities";
 import { Repository } from "typeorm";
 import { generate } from "randomstring";
+import { InviteCodeEntity } from "src/domain/invite-codes/entity";
+import { ISetInviteCodeStatusData } from "./types";
+import { UserService } from "../users";
 
+// import { UserService } from "src/domain/users";
 
 @Injectable()
 export class InviteCodeService {
   constructor(
+    @Inject(forwardRef(() => UserService))
+      private readonly _userService: UserService,
     @InjectRepository(InviteCodeEntity) 
-      private _inviteCodeRepository: Repository<InviteCodeEntity>
+      private readonly _repository: Repository<InviteCodeEntity>,
   ) {}
 
-  public async generate(): Promise<InviteCodeEntity> {
-    const codeBody = generate(15); /* random string */
+    public async findAll(): Promise<InviteCodeEntity[]> {
+      const codes: InviteCodeEntity[] = await this._repository.find();
+      if(!codes.length) {
+        throw new HttpException(
+          'Invite codes table is empty', 
+          HttpStatus.NOT_FOUND
+        );
+      }
 
-    return await this._inviteCodeRepository.save({
-      body: codeBody
+      return codes;
+    }
+
+    public async findByBody(body: string): Promise<InviteCodeEntity> {
+      const code = await this._repository.findOne({
+        where: { body }
+      })
+      if(!code) {
+        throw new HttpException(
+          `Code ${body} not found`, 
+          HttpStatus.NOT_FOUND
+        );
+      }
+
+      return code;
+    }
+
+  public async create(): Promise<InviteCodeEntity> {
+    return await this._repository.save({
+      body: '0' + generate(15) /* random string w/ length of 15 */
     });
+  }
+
+  public async setStatus(data: ISetInviteCodeStatusData): Promise<InviteCodeEntity> {
+    const codeEntity = await this.findByBody(data.body);
+    /* ToDo: add user entity to used invite code */
+    // codeEntity.user = ...User
+    codeEntity.is_used = data.status;
+    const result = await this._repository.save(codeEntity);
+
+    return result;
   }
 }

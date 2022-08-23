@@ -1,20 +1,19 @@
-import { Module } from "@nestjs/common";
+import { forwardRef, Module } from "@nestjs/common";
 import { TypeOrmModule } from "@nestjs/typeorm";
-import { InviteCodeEntity } from "src/database/entities";
-import { InviteCodeController } from "./invite-code.controller";
-import { InviteCodeService } from "./invite-code.service";
+import { InviteCodeController } from "src/controllers/invite-codes";
+import { InviteCodeService } from "src/domain/invite-codes/invite-code.service";
+import { InviteCodeEntity } from "src/domain/invite-codes/entity"
+import { UserModule } from "../users";
 
 @Module({
-  controllers: [
-    InviteCodeController
-  ],
-  providers: [
-    InviteCodeService
-  ],
+  controllers: [ InviteCodeController ],
+  providers: [ InviteCodeService ],
+  exports: [ InviteCodeService ],
   imports: [
     TypeOrmModule.forFeature([
       InviteCodeEntity
-    ])
+    ]),
+    forwardRef(() => UserModule)
   ]
 })
 export class InviteCodeModule {}

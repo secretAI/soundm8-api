@@ -9,7 +9,7 @@ import {
   Length, 
   UUIDVersion
 } from "class-validator";
-import { UserEntity } from "src/database/entities";
+import { UserEntity } from "src/domain/users";
 
 export class UserResponseDto {
   constructor(data: UserEntity) {

@@ -31,6 +31,6 @@ export class ConfigService {
         password: this.getEnvironmentVariable('DB_PASS'),
         driver: this.getEnvironmentVariable('DB_DRIVER')
       }
-    };
+    }
   }
 }

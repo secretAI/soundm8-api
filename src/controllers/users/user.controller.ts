@@ -31,7 +31,6 @@ export class UserController {
   public async activate(@Body() data: ActivateUserDto) {
     const result = await this._service.activateViaCode(data);
 
-    // return new UserResponseDto(result);
-    return result;
+    return new UserResponseDto(result);
   }
 }

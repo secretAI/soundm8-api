@@ -49,22 +49,22 @@ export class UserService {
     const { username, code } = data;
     const codeEntity = await this._inviteCodeService.findByBody(code);
     const userEnity = await this.findByName(username);
-    const doesExist = Boolean(codeEntity);
-    if(!doesExist) {
+    if(userEnity.is_activated) {
       throw new HttpException(
-        `Code ${code} does not exist`,
-        HttpStatus.NOT_FOUND
+        `@${username}'s account is already activated`,
+        HttpStatus.BAD_REQUEST
       );
     }
-    userEnity.invite_code = codeEntity;
-    userEnity.is_activated = true;
-    await this._inviteCodeService.setStatus({
+    await this._inviteCodeService.setUsedStatus({
       body: code,
-      status: true
+      userId: userEnity.id
     });
-    const result = await this._repository.save(userEnity, {
-      reload: true
-    });
+    userEnity.is_activated = true;
+    userEnity.invite_code = {
+      ...codeEntity,
+      is_used: true
+    };
+    const result = await this._repository.save(userEnity);
     
     return result;
   }

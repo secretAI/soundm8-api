@@ -1,0 +1,6 @@
+FROM postgres:latest
+
+WORKDIR /usr/src/database
+#COPY src/migrations/<sql> /docker-entrypoint-initdb.d/  #migrations
+
+EXPOSE 5432

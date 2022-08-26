@@ -32,7 +32,7 @@ export class InviteCodeService {
     public async findByBody(body: string): Promise<InviteCodeEntity> {
       const code = await this._repository.findOne({
         where: { body }
-      })
+      });
       if(!code) {
         throw new HttpException(
           `Code ${body} not found`, 
@@ -45,15 +45,20 @@ export class InviteCodeService {
 
   public async create(): Promise<InviteCodeEntity> {
     return await this._repository.save({
-      body: '0' + generate(15) /* random string w/ length of 15 */
+      body: 'SM8' + generate(15) /* random string w/ length of 15 */
     });
   }
 
-  public async setStatus(data: ISetInviteCodeStatusData): Promise<InviteCodeEntity> {
-    const codeEntity = await this.findByBody(data.body);
-    /* ToDo: add user entity to used invite code */
-    // codeEntity.user = ...User
-    codeEntity.is_used = data.status;
+  public async setUsedStatus(data: ISetInviteCodeStatusData): Promise<InviteCodeEntity> {
+    const { body } = data;
+    const codeEntity = await this.findByBody(body);
+    if(codeEntity.is_used) {
+      throw new HttpException(
+        `Code ${body} is already used`,
+        HttpStatus.BAD_REQUEST
+      );
+    }
+    codeEntity.is_used = true;
     const result = await this._repository.save(codeEntity);
 
     return result;

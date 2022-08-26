@@ -1,0 +1,27 @@
+version: '3.8'
+
+services:
+  database:
+    container_name: 'database'
+    environment:
+      - POSTGRES_PASSWORD=${DB_PASS}
+      - POSTGRES_DB=${DB_DATABASE}
+      - POSTGRES_USER=${DB_USER}
+    build: 
+      context: ./
+      dockerfile: ./docker/Dockerfile.db 
+    volumes:
+      - ./.database/postgres/data:/data/
+  app: 
+    container_name: 'api'
+    environment:
+      - DB_HOST=${DOCKER_CONTAINER_DB_HOST}
+      - DB_PORT=${DOCKER_CONTAINER_DB_PORT}
+    build: 
+      context: ./
+      dockerfile: ./docker/Dockerfile.api
+    ports:
+      - '3001:3001'
+    depends_on:
+      - database
+    restart: always

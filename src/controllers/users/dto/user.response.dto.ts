@@ -9,6 +9,7 @@ import {
   Length, 
   UUIDVersion
 } from "class-validator";
+import { InviteCodeEntity } from "src/domain/invite-codes";
 import { UserEntity } from "src/domain/users";
 
 export class UserResponseDto {
@@ -17,7 +18,8 @@ export class UserResponseDto {
     this.username = data.username;
     this.telegram_id = data.telegram_id;
     this.created_at = data.created_at;
-    this.is_activated = data.is_activated
+    this.is_activated = data.is_activated;
+    this.invite_code = data?.invite_code || null;
   }
 
   @IsUUID(4 as UUIDVersion)
@@ -39,4 +41,6 @@ export class UserResponseDto {
   @IsNotEmpty()
   @IsBoolean()
   public is_activated: boolean;
+
+  public invite_code: InviteCodeEntity;
 }

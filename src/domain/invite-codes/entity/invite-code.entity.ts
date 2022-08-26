@@ -26,11 +26,13 @@ export class InviteCodeEntity {
   })
   public readonly id: string;
 
+  @Matches(/^SM8(\w{15})$/gm)
   @IsString()
-  @Length(16, 16)
-  @Column('text', {
+  @Length(18, 18)
+  @Column('varchar', {
     name: 'body',
-    unique: true
+    unique: true,
+    length: 18
   })
   public body: string;
 

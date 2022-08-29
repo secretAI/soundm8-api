@@ -51,11 +51,12 @@ export class InviteCodeEntity {
   public is_used: boolean;
 
   /* relations */
-  @OneToOne(
-    () => UserEntity, 
-    (user) => user.invite_code,
-    { onDelete: 'CASCADE', onUpdate: 'CASCADE' }
-  )
-  @JoinColumn()
+  @OneToOne(() => UserEntity, user => user.invite_code, { 
+    onDelete: 'CASCADE', 
+    onUpdate: 'CASCADE' 
+  })
+  @JoinColumn({
+    name: 'user_id'
+  })
   user: UserEntity;
 }

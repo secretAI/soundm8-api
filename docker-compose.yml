@@ -12,6 +12,8 @@ services:
       dockerfile: ./docker/Dockerfile.db 
     volumes:
       - ./.database/postgres/data:/data/
+    ports:
+      - 5432:5432
   app: 
     container_name: 'api'
     environment:
@@ -21,7 +23,7 @@ services:
       context: ./
       dockerfile: ./docker/Dockerfile.api
     ports:
-      - '3001:3001'
+      - 3001:3001
     depends_on:
       - database
     restart: always

@@ -50,8 +50,9 @@ export class InviteCodeService {
   }
 
   public async setUsedStatus(data: ISetInviteCodeStatusData): Promise<InviteCodeEntity> {
-    const { body } = data;
-    const codeEntity = await this.findByBody(body);
+    const { body, userId } = data;
+    const user = await this._userService.findById(userId);
+    const codeEntity: InviteCodeEntity = await this.findByBody(body);
     if(codeEntity.is_used) {
       throw new HttpException(
         `Code ${body} is already used`,
@@ -59,6 +60,7 @@ export class InviteCodeService {
       );
     }
     codeEntity.is_used = true;
+    codeEntity.user = user;
     const result = await this._repository.save(codeEntity);
 
     return result;

@@ -6,7 +6,6 @@ import {
 } from "./dto";
 import { InviteCodeService } from "src/domain/invite-codes/invite-code.service";
 
-
 @Controller('/codes')
 export class InviteCodeController {
   constructor(

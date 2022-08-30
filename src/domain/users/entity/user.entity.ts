@@ -4,12 +4,10 @@ import {
   IsEmail,
   IsHash, 
   IsInt, 
-  IsNotEmpty, 
-  IsOptional, 
+  IsNotEmpty,  
   IsString, 
   IsUUID, 
   Length, 
-  UUIDVersion 
 } from "class-validator";
 import { 
   Column, 
@@ -21,8 +19,8 @@ import {
   OneToOne, 
   PrimaryColumn, 
 } from "typeorm";
-import { InviteCodeEntity } from "../../invite-codes";
-import { OrderEntity } from "../../orders";
+import { InviteCodeEntity } from "../../invite-codes/entity";
+import { OrderEntity } from "../../orders/entity";
 
 @Entity('users', {
   orderBy: {
@@ -79,7 +77,7 @@ export class UserEntity {
   @JoinColumn({
     name: 'invite_code_id',
   })
-  public invite_code: InviteCodeEntity;
+  public invite_code?: InviteCodeEntity;
 
   @IsString()
   public invite_code_id?: string;

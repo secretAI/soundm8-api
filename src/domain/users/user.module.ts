@@ -3,8 +3,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { UserController } from '../../controllers/users';
 import { UserService } from './user.service';
 import { UserEntity } from './entity';
-import { InviteCodeEntity } from 'src/domain/invite-codes/entity';
-import { InviteCodeModule, InviteCodeService } from 'src/domain/invite-codes';
+import { InviteCodeModule } from '../invite-codes';
 
 @Module({
   controllers: [ UserController ],

@@ -28,13 +28,13 @@ export class FileService {
       })
       .pipe(createWriteStream('stream'))
       .on('finish', () => {
-        console.log(`Write Stream created at ${__dirname}`);
+        console.log(`Temporary Write Stream created at ${__dirname}`);
         resolve(Buffer.concat(_buffer));
-        unlink('stream', () => console.log('Stream removed'));
+        unlink('stream', () => console.log('Write Stream removed'));
       })
       .on('error', (err) => {
         reject(err);
-      });
+      })
     });
   }
 

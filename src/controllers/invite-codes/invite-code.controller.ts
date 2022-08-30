@@ -1,9 +1,9 @@
 import { Body, Controller, Get, Param, Post } from "@nestjs/common";
-import { InviteCodeEntity } from "src/domain/invite-codes/entity";
+import { InviteCodeEntity } from "../../domain/invite-codes/entity";
 import { 
   InviteCodeResponseDto, 
 } from "./dto";
-import { InviteCodeService } from "src/domain/invite-codes/invite-code.service";
+import { InviteCodeService } from "../../domain/invite-codes/invite-code.service";
 
 @Controller('/codes')
 export class InviteCodeController {

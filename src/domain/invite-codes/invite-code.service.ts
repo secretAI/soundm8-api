@@ -2,11 +2,10 @@ import { forwardRef, HttpException, HttpStatus, Inject, Injectable } from "@nest
 import { InjectRepository } from "@nestjs/typeorm";
 import { Repository } from "typeorm";
 import { generate } from "randomstring";
-import { InviteCodeEntity } from "src/domain/invite-codes/entity";
+import { InviteCodeEntity } from "../../domain/invite-codes/entity";
 import { ISetInviteCodeStatusData } from "./types";
-import { UserService } from "../users";
-
-// import { UserService } from "src/domain/users";
+import { UserEntity } from "../users/entity";
+import { UserService } from "../users"
 
 @Injectable()
 export class InviteCodeService {
@@ -51,7 +50,7 @@ export class InviteCodeService {
 
   public async setUsedStatus(data: ISetInviteCodeStatusData): Promise<InviteCodeEntity> {
     const { body, userId } = data;
-    const user = await this._userService.findById(userId);
+    const userEntity: UserEntity = await this._userService.findById(userId);
     const codeEntity: InviteCodeEntity = await this.findByBody(body);
     if(codeEntity.is_used) {
       throw new HttpException(
@@ -60,9 +59,8 @@ export class InviteCodeService {
       );
     }
     codeEntity.is_used = true;
-    codeEntity.user = user;
-    const result = await this._repository.save(codeEntity);
+    codeEntity.user = userEntity;
 
-    return result;
+    return await this._repository.save(codeEntity);
   }
 }

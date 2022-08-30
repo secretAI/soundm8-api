@@ -20,7 +20,7 @@ import {
   ManyToOne, 
   PrimaryColumn,
 } from "typeorm";
-import { UserEntity } from "../../users";
+import { UserEntity } from "../../users/entity";
 import { PitchKey, PitchKeyList } from "../../../lib";
 
 @Entity('orders', {

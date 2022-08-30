@@ -6,13 +6,16 @@
   "private": true,
   "license": "MIT",
   "scripts": {
-    "prebuild": "rimraf dist",
-    "build": "nest build",
-    "start": "nest start",
     "start:dev": "nest start --watch",
+    "build": "nest build",
+    "docker": "docker compose up",
     "start:prod": "node dist/main",
     "test": "jest",
-    "docker": "docker compose up"
+    "prebuild": "rimraf dist",
+    "typeorm": "ts-node ./node_modules/typeorm/cli",
+    "migrate:create": "npm run typeorm -- migration:create ./src/migrations/migrations",
+    "migrate:generate": "npm run typeorm -- migration:generate -d ./src/modules/typeorm/migrations/typeorm.data-source.ts ./src/migrations/migrations --timestamp -p",
+    "migrate:run": "npm run typeorm migration:run -- -d ./src/modules/typeorm/migrations/typeorm.data-source.ts"
   },
   "dependencies": {
     "@nestjs/common": "^9.0.0",

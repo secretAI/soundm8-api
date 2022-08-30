@@ -15,7 +15,7 @@ import {
   OneToOne, 
   PrimaryColumn 
 } from "typeorm";
-import { UserEntity } from "../../users";
+import { UserEntity } from "../../users/entity";
 
 @Entity('invite_codes')
 export class InviteCodeEntity {

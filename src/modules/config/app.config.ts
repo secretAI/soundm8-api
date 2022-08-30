@@ -14,6 +14,6 @@ type SonicApiConfig = {
 
 export type AppConfig = {
   env: string;
-  postgres: DatabaseConfig;
+  db: DatabaseConfig;
   sonicApi: SonicApiConfig;
 };

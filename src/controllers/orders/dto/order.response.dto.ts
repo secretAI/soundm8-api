@@ -13,10 +13,10 @@ import {
   IsBoolean, 
   IsUrl
 } from "class-validator";
-import { OrderEntity } from "src/domain/orders";
-import { UserEntity } from "src/domain/users";
-import { PitchKey, PitchKeyList } from "src/lib";
 import { CreateDateColumn, Column } from "typeorm";
+import { OrderEntity } from "../../../domain/orders/entity";
+import { UserEntity } from "../../../domain/users/entity";
+import { PitchKey, PitchKeyList } from "../../../lib";
 
 export class OrderResponseDto {
   constructor(data: OrderEntity) {

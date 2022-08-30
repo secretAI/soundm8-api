@@ -8,8 +8,8 @@ import {
   Length, 
   UUIDVersion
 } from "class-validator";
-import { InviteCodeEntity } from "src/domain/invite-codes";
-import { UserEntity } from "src/domain/users";
+import { InviteCodeEntity } from "../../../domain/invite-codes/entity";
+import { UserEntity } from "../../../domain/users/entity";
 
 export class UserResponseDto {
   constructor(data: UserEntity) {

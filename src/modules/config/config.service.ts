@@ -23,7 +23,7 @@ export class ConfigService {
   public get config(): AppConfig {
     return {
       env: this.getEnvironmentVariable('NODE_ENV'),
-      postgres: {
+      db: {
         host: this.getEnvironmentVariable('DB_HOST'),
         port: Number(this.getEnvironmentVariable('DB_PORT')),
         database: this.getEnvironmentVariable('DB_DATABASE'),

@@ -1,8 +1,8 @@
 import { forwardRef, Module } from "@nestjs/common";
 import { TypeOrmModule } from "@nestjs/typeorm";
-import { InviteCodeController } from "src/controllers/invite-codes";
-import { InviteCodeService } from "src/domain/invite-codes/invite-code.service";
-import { InviteCodeEntity } from "src/domain/invite-codes/entity"
+import { InviteCodeController } from "../../controllers/invite-codes";
+import { InviteCodeService } from "../../domain/invite-codes/invite-code.service";
+import { InviteCodeEntity } from "../../domain/invite-codes/entity"
 import { UserModule } from "../users";
 
 @Module({

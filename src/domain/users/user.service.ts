@@ -1,9 +1,9 @@
 import { forwardRef, HttpException, HttpStatus, Inject, Injectable } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
-import { Repository, UpdateResult } from "typeorm";
-import { InviteCodeEntity, InviteCodeService } from "../invite-codes/";
+import { Repository } from "typeorm";
+import { UserEntity } from "../../domain/users/entity";
 import { ICreateUserData } from "./types";
-import { UserEntity } from "src/domain/users/entity";
+import { InviteCodeService } from "../../domain/invite-codes";
 import { IActivateUserData } from "./types/activate-user.interface";
 
 @Injectable()

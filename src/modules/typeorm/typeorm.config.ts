@@ -1,8 +1,8 @@
 import { Injectable, Logger } from '@nestjs/common';
 import { TypeOrmModuleOptions, TypeOrmOptionsFactory } from '@nestjs/typeorm';
-import { InviteCodeEntity } from 'src/domain/invite-codes';
-import { OrderEntity } from 'src/domain/orders';
-import { UserEntity } from 'src/domain/users';
+import { InviteCodeEntity } from '../../domain/invite-codes/entity';
+import { OrderEntity } from '../../domain/orders/entity';
+import { UserEntity } from '../../domain/users/entity';
 import { ConfigService } from '../config';
 
 @Injectable()
@@ -21,7 +21,7 @@ export class TypeOrmConfig implements TypeOrmOptionsFactory {
       username, 
       password, 
       driver 
-    } = this._service.config.postgres;
+    } = this._service.config.db;
     const { env } = this._service.config; 
     this._logger.verbose('TypeOrm options generated');
 
@@ -32,7 +32,7 @@ export class TypeOrmConfig implements TypeOrmOptionsFactory {
       host,
       port,
       type: driver as TypeOrmModuleOptions['driver'],
-      synchronize: env === 'development', /* false for production */
+      synchronize: env == 'development', /* false for production */
       keepConnectionAlive: false,
       logging: false,
       applicationName: 'soundm8',

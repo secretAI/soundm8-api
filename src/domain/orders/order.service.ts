@@ -2,7 +2,7 @@ import { forwardRef, HttpException, Inject, Injectable } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
 import { InsertResult, Repository, TableColumn } from "typeorm";
 import * as dotenv from "dotenv";
-import { OrderEntity } from "src/domain/orders/entity";
+import { OrderEntity } from "../../domain/orders/entity";
 import { ICreateOrderData } from "./types";
 import { UserService } from "../users";
 

@@ -1,5 +1,5 @@
 import { 
-  IsEmail, 
+  IsInt,
   IsNotEmpty, 
   IsOptional, 
   IsString, 
@@ -8,10 +8,10 @@ import {
 
 export class CreateUserDto {
   @IsNotEmpty()
+  @IsString()
   public username: string;
 
-  @IsOptional()
-  @IsString()
-  @Length(6, 12)
+  @IsNotEmpty()
+  @IsInt()
   public telegram_id: number;
 }

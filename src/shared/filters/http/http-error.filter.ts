@@ -1,4 +1,4 @@
-import { ExceptionFilter, Catch, HttpException, RequestMethod, ArgumentsHost, Logger } from '@nestjs/common';
+import { ExceptionFilter, Catch, HttpException, ArgumentsHost, Logger } from '@nestjs/common';
 import { Request, Response } from 'express';
 import { HttpErrorFilterResponse } from './types';
 
@@ -18,8 +18,8 @@ export class HttpErrorFilter implements ExceptionFilter {
     const data: HttpErrorFilterResponse = {
       path: req.url,
       code: exception.getStatus(),
-      method: (req.method as unknown) as RequestMethod,
-      message: exception.message || null,
+      method: req.method,
+      message: exception['response'].message || exception.message || null,
       timestamp: new Date().toISOString(),
     };
     this._logger.error(

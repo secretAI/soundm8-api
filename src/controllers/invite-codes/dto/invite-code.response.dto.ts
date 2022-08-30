@@ -10,7 +10,7 @@ export class InviteCodeResponseDto {
     this.user = data?.user || null;
   }
 
-  @IsUUID(4 as UUIDVersion)
+  @IsUUID()
   public readonly id: string;
 
   @Matches(/^SM8(\w{15})$/gm)

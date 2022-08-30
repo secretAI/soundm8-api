@@ -1,9 +1,8 @@
 import { 
   IsBoolean,
   IsDate,
-  IsEmail, 
+  IsInt,
   IsNotEmpty, 
-  IsOptional, 
   IsString, 
   IsUUID, 
   Length, 
@@ -19,18 +18,18 @@ export class UserResponseDto {
     this.telegram_id = data.telegram_id;
     this.created_at = data.created_at;
     this.is_activated = data.is_activated;
-    this.invite_code = data?.invite_code || null;
+    this.invite_code = data.invite_code || null;
   }
 
-  @IsUUID(4 as UUIDVersion)
+  @IsUUID()
   public id: string;
 
+  @IsString()
   @Length(6, 48)
-  @IsEmail()
   public username: string;
 
   @IsNotEmpty()
-  @IsString()
+  @IsInt()
   @Length(6, 12)
   public telegram_id: number;
 

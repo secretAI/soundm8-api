@@ -3,6 +3,7 @@ import {
   IsDate,
   IsEmail,
   IsHash, 
+  IsInt, 
   IsNotEmpty, 
   IsOptional, 
   IsString, 
@@ -29,7 +30,7 @@ import { OrderEntity } from "../../orders";
   }
 })
 export class UserEntity {
-  @IsUUID(4 as UUIDVersion)
+  @IsUUID()
   @PrimaryColumn('uuid', {
     name: 'id',
     default: () => 'gen_random_uuid()'
@@ -42,14 +43,14 @@ export class UserEntity {
   @Column('varchar', {
     name: 'username',
     nullable: false,
-    unique: false
+    unique: true
   })
   public username: string;
 
   @IsNotEmpty()
-  @Length(6, 12)
+  @IsInt()
   @Index('user_telegram_id_index', ['telegram_id'])
-  @Column('int', {
+  @Column('bigint', {
     name: 'telegram_id',
     nullable: true,
     unique: true
@@ -80,9 +81,12 @@ export class UserEntity {
   })
   public invite_code: InviteCodeEntity;
 
+  @IsString()
+  public invite_code_id?: string;
+
   @OneToMany(() => OrderEntity, order => order.user, {
     onDelete: 'CASCADE',
     onUpdate: 'CASCADE'
   })
-  public orders: OrderEntity[];
+  public orders?: OrderEntity[];
 };

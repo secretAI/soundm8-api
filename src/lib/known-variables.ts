@@ -6,8 +6,6 @@ export type KnownEnvironmentVariables = {
   DB_USER: string;
   DB_PASS: string;
   DB_DRIVER: string;
-  /* auth */
-  JWT_SECRET: string;
-  JWT_ALGORITHM: string;
-  SALT_ROUNDS: number;
+  SONIC_API_URL: string;
+  SONIC_API_KEY: string;
 };

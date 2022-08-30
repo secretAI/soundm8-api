@@ -1,5 +1,15 @@
-import { IsIn, IsInt, IsNotEmpty, IsNumber, IsOptional, IsString, IsUrl, Max, Min } from "class-validator";
-import { PitchKeyList } from "src/lib";
+import { 
+  IsFQDN,
+  IsIn, 
+  IsInt, 
+  IsNotEmpty, 
+  IsOptional, 
+  IsString,
+  IsUrl,
+  Max, 
+  Min 
+} from "class-validator";
+import { PitchKey, PitchKeyList } from "src/lib";
 
 export class CreateOrderDto {
   @IsUrl()
@@ -7,8 +17,8 @@ export class CreateOrderDto {
   public url: string;
 
   @IsOptional()
-  @IsIn(PitchKeyList.uniqueKeys)
-  key?: string;
+  @IsIn(PitchKeyList)
+  key?: PitchKey;
 
   @IsOptional()
   @IsInt()

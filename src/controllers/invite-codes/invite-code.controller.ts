@@ -2,7 +2,6 @@ import { Body, Controller, Get, Param, Post } from "@nestjs/common";
 import { InviteCodeEntity } from "src/domain/invite-codes/entity";
 import { 
   InviteCodeResponseDto, 
-  SaveInviteCodeDto 
 } from "./dto";
 import { InviteCodeService } from "src/domain/invite-codes/invite-code.service";
 
@@ -14,7 +13,7 @@ export class InviteCodeController {
 
   @Get('/')
   public async findAll(): Promise<InviteCodeResponseDto[]> {
-    const result = await this._service.findAll();
+    const result: InviteCodeEntity[] = await this._service.findAll();
 
     return result.map(code => new InviteCodeResponseDto(code));
   }

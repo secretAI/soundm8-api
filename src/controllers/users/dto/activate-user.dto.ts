@@ -1,5 +1,4 @@
-import { 
-  IsEmail, 
+import {
   IsNotEmpty, 
   IsOptional, 
   IsString, 
@@ -8,10 +7,11 @@ import {
 
 export class ActivateUserDto {
   @IsNotEmpty()
+  @IsString()
   public username: string;
 
-  @IsOptional()
+  @IsNotEmpty()
   @IsString()
-  @Length(16, 16)
+  @Length(18, 18)
   public code: string;
 }

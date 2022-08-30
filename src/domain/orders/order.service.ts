@@ -16,7 +16,8 @@ export class OrderService {
   ) {}
 
   public async create(data: ICreateOrderData): Promise<OrderEntity> {
-    await this._userService.findByName(data.username);
+    await this._userService.checkIfExist(data.username); 
+    
     return await this._orderRepository.save(data);
   }
 }

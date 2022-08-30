@@ -30,6 +30,10 @@ export class ConfigService {
         username: this.getEnvironmentVariable('DB_USER'),
         password: this.getEnvironmentVariable('DB_PASS'),
         driver: this.getEnvironmentVariable('DB_DRIVER')
+      },
+      sonicApi: {
+        url: this.getEnvironmentVariable('SONIC_API_URL'),
+        apiKey: this.getEnvironmentVariable('SONIC_API_KEY')
       }
     }
   }

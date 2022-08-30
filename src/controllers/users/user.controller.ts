@@ -7,28 +7,28 @@ export class UserController {
   constructor(private readonly _service: UserService) {}
 
   @Get('/')
-  public async findAll(): Promise<UserResponseDto[]> {
+  public async findAll(): Promise<UserEntity[]> {
     const result: UserEntity[] = await this._service.findAll();
 
     return result.map(user => new UserResponseDto(user));
   }
 
   @Get('/:name')
-  public async findByName(@Param('name') name: string): Promise<UserResponseDto> {
+  public async findByName(@Param('name') name: string): Promise<UserEntity> {
     const result: UserEntity = await this._service.findByName(name);
 
     return new UserResponseDto(result);
   }
 
   @Post('/create')
-  public async create(@Body() data: CreateUserDto): Promise<UserResponseDto> {
+  public async create(@Body() data: CreateUserDto): Promise<UserEntity> {
     const result: UserEntity = await this._service.create(data);
 
     return new UserResponseDto(result);
   }
 
   @Post('/activate')
-  public async activate(@Body() data: ActivateUserDto) {
+  public async activate(@Body() data: ActivateUserDto): Promise<UserEntity> {
     const result = await this._service.activateViaCode(data);
 
     return new UserResponseDto(result);

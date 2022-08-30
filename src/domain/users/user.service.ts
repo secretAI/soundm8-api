@@ -16,22 +16,46 @@ export class UserService {
   ) {}
 
   public async findAll(): Promise<UserEntity[]> {
-    return await this._repository.find();
+    return await this._repository.find({
+      relations: {
+        invite_code: true
+      }
+    });
   }
 
   public async findById(id: string): Promise<UserEntity> {
     return await this._repository.findOne({
-      where: { id }
+      where: { id },
+      relations: {
+        invite_code: true
+      }
     });
   }
 
-  public async findByName(name: string): Promise<UserEntity> {
+  public async checkIfExist(username: string): Promise<boolean> {
     const user = await this._repository.findOne({
-      where: { username: name }
+      where: { username }
     });
     if(!user) {
       throw new HttpException(
-        `User @${name} not found`, 
+        `User @${username} not found`, 
+        HttpStatus.NOT_FOUND
+      );
+    }
+
+    return true;
+  }
+
+  public async findByName(username: string): Promise<UserEntity> {
+    const user = await this._repository.findOne({
+      where: { username },
+      relations: {
+        invite_code: true
+      }
+    });
+    if(!user) {
+      throw new HttpException(
+        `User @${username} not found`, 
         HttpStatus.NOT_FOUND
       );
     }

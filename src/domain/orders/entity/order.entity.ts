@@ -6,11 +6,11 @@ import {
   IsInt, 
   IsNotEmpty, 
   IsOptional, 
+  IsUrl, 
   IsUUID, 
   Length, 
   Max, 
-  Min, 
-  UUIDVersion 
+  Min 
 } from "class-validator";
 import { 
   Column, 
@@ -21,7 +21,7 @@ import {
   PrimaryColumn,
 } from "typeorm";
 import { UserEntity } from "../../users";
-import { PitchKeyList } from "../../../lib";
+import { PitchKey, PitchKeyList } from "../../../lib";
 
 @Entity('orders', {
   orderBy: { 
@@ -29,7 +29,7 @@ import { PitchKeyList } from "../../../lib";
   }
 })
 export class OrderEntity {
-  @IsUUID(4 as UUIDVersion)
+  @IsUUID()
   @PrimaryColumn('uuid', {
     name: 'id',
     default: () => 'gen_random_uuid()'
@@ -38,7 +38,7 @@ export class OrderEntity {
 
   @IsNotEmpty()
   @Length(30, 350)
-  @IsFQDN() /* check if url suits pattern: abc.com */
+  @IsUrl() /* check if url suits pattern: abc.com */
   @Index('order_url_index', ['url'])
   @Column('text', {
     name: 'url',
@@ -48,12 +48,12 @@ export class OrderEntity {
   public url: string;
 
   @IsOptional()
-  @IsIn(PitchKeyList.uniqueKeys)
+  @IsIn(PitchKeyList)
   @Column('enum', {
     name: 'key',
-    enum: PitchKeyList.uniqueKeys
+    enum: PitchKeyList
   })
-  public key?: string;
+  public key?: PitchKey;
 
   @IsOptional()
   @IsInt()

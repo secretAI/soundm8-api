@@ -7,7 +7,13 @@ type DatabaseConfig = {
   driver: string;
 };
 
+type SonicApiConfig = {
+  url: string;
+  apiKey: string;
+}
+
 export type AppConfig = {
   env: string;
   postgres: DatabaseConfig;
+  sonicApi: SonicApiConfig;
 };

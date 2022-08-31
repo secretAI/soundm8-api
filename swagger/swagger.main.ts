@@ -1,14 +1,14 @@
 import { INestApplication } from '@nestjs/common';
 import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
-import { OpenAPIObject } from '@nestjs/swagger';
 
-export function createSwaggerDoc(app: INestApplication): OpenAPIObject {
+export function generateDocumentation(app: INestApplication): void {
   const config = new DocumentBuilder()
-  .setTitle('Soundm8 API')
+  .setTitle('SoundM8 API')
   .setVersion('0.0.1')
-  .setDescription('Soundm8 API Documentation')
-  .addTag('soundm8')
+  .setDescription('SoundM8 API Documentation')
+  .addTag('Users')
+  .addTag('Orders')
+  .addTag('Invite Codes')
   .build();
-
-  return SwaggerModule.createDocument(app, config);
+  SwaggerModule.setup('doc', app, SwaggerModule.createDocument(app, config));
 }

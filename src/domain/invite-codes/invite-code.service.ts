@@ -55,7 +55,7 @@ export class InviteCodeService {
     if(codeEntity.is_used) {
       throw new HttpException(
         `Code ${body} is already used`,
-        HttpStatus.BAD_REQUEST
+        HttpStatus.FORBIDDEN
       );
     }
     codeEntity.is_used = true;

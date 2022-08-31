@@ -85,5 +85,5 @@ export class OrderEntity {
     user => user.orders,
     { onDelete: 'SET NULL', onUpdate: 'CASCADE' }
   )
-  public user: UserEntity;
+  public user?: UserEntity;
 };

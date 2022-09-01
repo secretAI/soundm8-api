@@ -34,6 +34,10 @@ export class ConfigService {
       sonicApi: {
         url: this.getEnvironmentVariable('SONIC_API_URL'),
         apiKey: this.getEnvironmentVariable('SONIC_API_KEY')
+      },
+      http: {
+        maxRedirects: Number(this.getEnvironmentVariable('HTTP_MAX_REDIRECTS')),
+        timeout: Number(this.getEnvironmentVariable('HTTP_TIMEOUT'))
       }
     }
   }

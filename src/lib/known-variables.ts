@@ -8,4 +8,6 @@ export type KnownEnvironmentVariables = {
   DB_DRIVER: string;
   SONIC_API_URL: string;
   SONIC_API_KEY: string;
+  HTTP_TIMEOUT: number;
+  HTTP_MAX_REDIRECTS: number;
 };

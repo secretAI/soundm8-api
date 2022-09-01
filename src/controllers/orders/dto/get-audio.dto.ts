@@ -1,7 +1,15 @@
-import { IsFQDN, IsString } from "class-validator";
+import { IsUrl, IsString, IsNotEmpty } from "class-validator";
+import { SonicApiData } from "../../../domain/file/types";
 
 export class GetAudioTrackDto {
+  @IsNotEmpty()
+  @IsUrl()
+  public videoUrl: string;
+
+  @IsNotEmpty()
   @IsString()
-  @IsFQDN()
-  public url: string;
+  public endPoint: string;
+
+  @IsNotEmpty()
+  public api: SonicApiData;
 }

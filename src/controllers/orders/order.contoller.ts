@@ -1,5 +1,5 @@
 import { Body, Controller, forwardRef, Get, HttpStatus, Inject, Post, Req } from "@nestjs/common";
-import { ApiResponse, ApiTags } from "@nestjs/swagger";
+import { ApiBadRequestResponse, ApiOkResponse, ApiResponse, ApiTags } from "@nestjs/swagger";
 import { FileService } from "src/domain/file/file.service";
 import { OrderEntity } from "src/domain/orders/entity";
 import { OrderService } from "../../domain/orders";
@@ -14,8 +14,8 @@ export class OrderController {
       private readonly _fileService: FileService
   ) {}
 
-  @ApiResponse({ status: HttpStatus.OK, description: 'Creates order' })
-  @ApiResponse({ status: HttpStatus.BAD_REQUEST, description: 'Class validator failure' })
+  @ApiOkResponse({ description: 'Creates order' })
+  @ApiBadRequestResponse({ description: 'Class validator failure' })
   @Post('/create')
   public async createOrder(@Body() data: CreateOrderDto): Promise<OrderEntity> {
     const result = await this._orderService.create(data)

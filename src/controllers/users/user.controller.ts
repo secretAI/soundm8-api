@@ -1,8 +1,9 @@
 import { Body, Controller, Get, HttpCode, HttpStatus, Param, Post } from "@nestjs/common";
-import { ApiResponse, ApiTags } from "@nestjs/swagger";
+import { ApiBadRequestResponse, ApiCreatedResponse, ApiForbiddenResponse, ApiNotFoundResponse, ApiOkResponse, ApiResponse, ApiTags, getSchemaPath } from "@nestjs/swagger";
 import { UserService } from "src/domain/users";
 import { UserEntity } from "src/domain/users/entity"; 
 import { UserResponseDto, CreateUserDto, ActivateUserDto } from "./dto";
+import { User } from './';
 
 @ApiTags('Users')
 @Controller('/users')
@@ -10,7 +11,11 @@ export class UserController {
   constructor(private readonly _service: UserService) {}
 
   @Get('/')
-  @ApiResponse({ status: HttpStatus.OK, description: 'Get all users / empty array' })
+  @ApiOkResponse({ 
+    description: 'Get all users / empty array', 
+    isArray: true
+  })
+  @ApiBadRequestResponse({ description: 'Class validator failure' })
   public async findAll(): Promise<UserEntity[]> {
     const result: UserEntity[] = await this._service.findAll();
 
@@ -18,8 +23,9 @@ export class UserController {
   }
 
   @Get('/:name')
-  @ApiResponse({ status: HttpStatus.OK, description: 'Gets user' })
-  @ApiResponse({ status: HttpStatus.NOT_FOUND, description: 'User not found'})
+  @ApiOkResponse({ description: 'Gets user' })
+  @ApiNotFoundResponse({ description: 'User not found' })
+  @ApiBadRequestResponse({ description: 'Class validator failure' })
   public async findByName(@Param('name') name: string): Promise<UserEntity> {
     const result: UserEntity = await this._service.findByName(name);
 
@@ -27,8 +33,8 @@ export class UserController {
   }
 
   @Post('/create')
-  @ApiResponse({ status: HttpStatus.OK, description: 'Creates new user' })
-  @ApiResponse({ status: HttpStatus.BAD_REQUEST, description: 'Class validator failure' })
+  @ApiCreatedResponse({ description: 'Creates new user' })
+  @ApiBadRequestResponse({ description: 'Class validator failure' })
   public async create(@Body() data: CreateUserDto): Promise<UserEntity> {
     const result: UserEntity = await this._service.create(data);
 
@@ -36,13 +42,10 @@ export class UserController {
   }
 
   @Post('/activate')
-  @HttpCode(HttpStatus.OK)
-  @ApiResponse({ status: HttpStatus.OK, description: 'Gets user' })
-  @ApiResponse({ status: HttpStatus.FORBIDDEN, description: 'Code is already used' })
-  @ApiResponse({ 
-    status: HttpStatus.BAD_REQUEST, 
-    description: 'User not found / already activated' 
-  })
+  @ApiOkResponse({ description: 'Gets user' })
+  @ApiForbiddenResponse({ description: 'Code is already used' })
+  @ApiBadRequestResponse({ description: 'Class validator failure' })
+  @ApiBadRequestResponse({ description: 'User not found / already activated' })
   public async activate(@Body() data: ActivateUserDto): Promise<UserEntity> {
     const result = await this._service.activateViaCode(data);
 

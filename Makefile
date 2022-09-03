@@ -1,8 +1,9 @@
 #!make
 
 init: 
-	npm run migrate:run && npm run prebuild && npm run start:dev;
+	npm run prebuild && npm start;
 
 
-dump:	
-	./scripts/dump.sh;
+cscheme:	
+	chmod +x ./scripts/generate-postgres-migration.sh;
+	./scripts/generate-postgres-migration.sh;

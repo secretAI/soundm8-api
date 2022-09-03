@@ -1,0 +1,7 @@
+FROM postgres:latest
+
+WORKDIR /usr/src/database
+# direct sql injection ⬇️
+COPY /docker/postgres/migration.sql /docker-entrypoint-initdb.d/
+
+EXPOSE 5432

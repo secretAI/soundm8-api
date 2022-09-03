@@ -7,6 +7,7 @@
   "license": "MIT",
   "scripts": {
     "start:dev": "nest start --watch",
+    "start": "nest start",
     "build": "nest build",
     "docker": "docker compose up",
     "start:prod": "node dist/main",

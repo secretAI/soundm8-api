@@ -1,9 +1,0 @@
-FROM postgres:latest
-
-WORKDIR /usr/src/database
-COPY ./dump.sh .
-RUN chmod +x ./dump.sh
-COPY src/docker/database/backup.sql /docker-entrypoint-initdb.d/
-
-EXPOSE 5432
-CMD ./dump.sh

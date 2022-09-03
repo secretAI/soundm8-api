@@ -9,7 +9,7 @@ services:
       - POSTGRES_USER=${DB_USER}
     build: 
       context: ./
-      dockerfile: ./docker/Dockerfile.db 
+      dockerfile: ./docker/images/Dockerfile.db 
     volumes:
       - ./.database/postgres/data:/data/
     ports:
@@ -21,7 +21,7 @@ services:
       - DB_PORT=${DOCKER_CONTAINER_DB_PORT}
     build: 
       context: ./
-      dockerfile: ./docker/Dockerfile.api
+      dockerfile: ./docker/images/Dockerfile.api
     ports:
       - 3001:3001
     depends_on:

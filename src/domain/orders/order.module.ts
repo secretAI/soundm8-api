@@ -2,7 +2,7 @@ import { forwardRef, Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { OrderEntity } from '../../domain/orders/entity';
 import { OrderController } from '../../controllers/orders';
-import { FileModule } from '../file/file.module';
+import { AudioModule } from '../audio/audio.module';
 import { UserModule } from '../users';
 import { OrderService } from './order.service';
 
@@ -15,7 +15,7 @@ import { OrderService } from './order.service';
       OrderEntity
     ]),
     forwardRef(() => UserModule),
-    forwardRef(() => FileModule)
+    forwardRef(() => AudioModule)
   ]
 })
 export class OrderModule {}

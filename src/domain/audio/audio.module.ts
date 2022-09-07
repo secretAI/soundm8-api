@@ -1,14 +1,14 @@
 import { HttpModule } from "@nestjs/axios";
 import { forwardRef, Module } from "@nestjs/common";
 import { OrderController } from "../../controllers/orders";
-import { OrderModule } from "../../domain/orders";
+import { OrderModule } from "../orders";
 import { ConfigModule, ConfigService } from "../../modules/config";
-import { FileService } from "./file.service";
+import { AudioService } from "./audio.service";
 
 @Module({
   controllers: [ OrderController ],
-  providers: [ FileService ],
-  exports: [ FileService ],
+  providers: [ AudioService ],
+  exports: [ AudioService ],
   imports: [ 
     forwardRef(() => OrderModule), 
     ConfigModule,
@@ -22,4 +22,4 @@ import { FileService } from "./file.service";
     })
   ]
 })
-export class FileModule {}
+export class AudioModule {}

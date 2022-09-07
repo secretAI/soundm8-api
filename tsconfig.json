@@ -21,8 +21,7 @@
   },
   "include": [
     "src",
-    "swagger",
-    // "wav-decoder.d.ts"
+    "swagger"
   ],
   "exclude": [
     "test",

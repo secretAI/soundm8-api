@@ -1,17 +1,33 @@
-import { Body, Controller, forwardRef, Get, HttpStatus, Inject, Post, Req } from "@nestjs/common";
-import { ApiBadRequestResponse, ApiOkResponse, ApiResponse, ApiTags } from "@nestjs/swagger";
-import { FileService } from "src/domain/file/file.service";
+import { 
+  Body, 
+  Controller, 
+  forwardRef, 
+  Get, 
+  HttpStatus, 
+  Inject, 
+  Post, 
+  Req 
+} from "@nestjs/common";
+import { 
+  ApiBadRequestResponse, 
+  ApiOkResponse,
+  ApiTags 
+} from "@nestjs/swagger";
+import { AudioService } from "src/domain/audio/audio.service";
 import { OrderEntity } from "src/domain/orders/entity";
 import { OrderService } from "../../domain/orders";
-import { CreateOrderDto, GetAudioTrackDto, OrderResponseDto } from "./dto";
+import { 
+  CreateOrderDto, 
+  OrderResponseDto 
+} from "./dto";
 
 @ApiTags('Orders')
 @Controller('/orders')
 export class OrderController {
   constructor(
     private readonly _orderService: OrderService,
-    @Inject(forwardRef(() => FileService))
-      private readonly _fileService: FileService
+    @Inject(forwardRef(() => AudioService))
+      private readonly _AudioService: AudioService
   ) {}
 
   @ApiOkResponse({ description: 'Creates order' })
@@ -25,7 +41,8 @@ export class OrderController {
 
   @Post('test')
   public async getTrackPitchKey(@Body() data: {url: string}) {
-    const result = await this._fileService.getAudioPitchKey(data);
+    // const result = 1;
+    const result = await this._AudioService.createTemporaryStream(data.url);
     console.log(result);
     
     return result;
@@ -34,7 +51,7 @@ export class OrderController {
   /* 
   @Post('/test')
   public async getAudioTrack(@Body() data: GetAudioTrackDto) {
-    const result = await this._fileService.sendApiRequest(data);
+    const result = await this._AudioService.sendApiRequest(data);
     console.log(result);
     
     return result;

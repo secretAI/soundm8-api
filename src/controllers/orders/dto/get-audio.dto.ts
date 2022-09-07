@@ -1,5 +1,5 @@
 import { IsUrl, IsString, IsNotEmpty } from "class-validator";
-import { SonicApiData } from "../../../domain/file/types";
+import { SonicApiData } from "../../../domain/audio/types";
 
 export class GetAudioTrackDto {
   @IsNotEmpty()

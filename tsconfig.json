@@ -18,5 +18,14 @@
     "forceConsistentCasingInFileNames": false,
     "noFallthroughCasesInSwitch": false,
     "esModuleInterop": true
-  }
+  },
+  "include": [
+    "src",
+    "swagger",
+    // "wav-decoder.d.ts"
+  ],
+  "exclude": [
+    "test",
+    "scripts"
+  ]
 }

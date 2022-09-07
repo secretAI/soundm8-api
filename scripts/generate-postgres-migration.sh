@@ -1,10 +1,11 @@
 #!/bin/sh
-SCHEME_FILE_NAME="base-scheme.sql";
-SCHEME_FILE_PATH="./docker/postgres/$SCHEME_FILE_NAME";
+TIMESTAMP="$(date +%s)"
+FILE_NAME="migration$TIMESTAMP.sql";
+FILE_PATH="./src/migrations/$FILE_NAME";
 
-if ! test -f $SCHEME_FILE_PATH; then
-  mkdir ./docker/postgres && cd postgres && touch $SCHEME_FILE_NAME;
+if ! test -f $FILE_PATH; then
+  mkdir ./src/migrations && cd migrations && touch $FILE_NAME;
 fi
 
-pg_dump -U postgres -p 5050 soundm8 -s -c --if-exists -f $SCHEME_FILE_PATH --verbose;
-echo "Scheme copy created at $SCHEME_FILE_PATH\nTimestamp: $(date +%s)";
+pg_dump -U postgres -p 5050 soundm8 -s -c --if-exists -f $FILE_PATH --verbose;
+echo "\nMigration created at: [ $FILE_PATH ]\nTimestamp: [ $(date -jnRu) ]";

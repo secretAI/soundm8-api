@@ -4,6 +4,6 @@ init:
 	npm run prebuild && npm start;
 
 
-cscheme:	
+genmgr:	
 	chmod +x ./scripts/generate-postgres-migration.sh;
 	./scripts/generate-postgres-migration.sh;

@@ -23,8 +23,15 @@ export class OrderController {
     return new OrderResponseDto(result);
   }
 
+  @Post('test')
+  public async getTrackPitchKey(@Body() data: {url: string}) {
+    const result = await this._fileService.getAudioPitchKey(data);
+    console.log(result);
+    
+    return result;
+  }
+
   /* 
-  */
   @Post('/test')
   public async getAudioTrack(@Body() data: GetAudioTrackDto) {
     const result = await this._fileService.sendApiRequest(data);
@@ -32,4 +39,5 @@ export class OrderController {
     
     return result;
   } 
+  */
 }

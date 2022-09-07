@@ -1,14 +1,15 @@
 import { forwardRef, HttpException, HttpStatus, Inject, Injectable } from "@nestjs/common";
 import ytdl, { videoFormat, videoInfo } from 'ytdl-core';
 import { HttpService } from "@nestjs/axios";
-import { createWriteStream, unlink } from "fs";
+import { createWriteStream, unlink, unlinkSync } from "fs";
 import { ConfigService } from "src/modules/config";
-import { IGetPitchKeyData } from "./types";
+import { IExtractAudioData, IGetPitchKeyData } from "./types";
 import { OrderService } from "../orders";
 import { YIN } from 'pitchfinder';
 import ffmpeg from 'ffmpeg';
 import * as path from 'path';
-import * as command from 'fluent-ffmpeg';
+import command from 'fluent-ffmpeg';
+import { ChildProcess, exec, ExecException } from 'child_process';
 
 @Injectable()
 export class AudioService {
@@ -25,15 +26,7 @@ export class AudioService {
     this.apiKey = this._config.config.sonicApi.apiKey;
   }
 
-  private getOptimalVideoFormat(info: videoInfo): videoFormat {
-    const formats: videoFormat[] = ytdl.filterFormats(info.formats, 'audio');
-    console.log(0, formats);
-
-    return formats.sort((form: videoFormat, form_: videoFormat) => form_.audioBitrate - form.audioBitrate)[0]; 
-    /* sort DESC, get the highest audio quality  */
-  }
-
-  public async createTemporaryStream(url: string): Promise<any>/* ToDo: fix type */ {
+  public async processUrl(url: string): Promise<void>/* ToDo: fix type */ {
     if(!ytdl.validateURL(url)) {
       throw new HttpException(
         'Invalid Youtube Video URL',
@@ -42,55 +35,49 @@ export class AudioService {
     }
 
     return new Promise(async (resolve, reject) => {
+      const fileName = Date.now() + '_';
       const info: videoInfo = await ytdl.getInfo(url);
-      const format: videoFormat = this.getOptimalVideoFormat(info);
-      console.log('you choose', format);
-      const _buffer: Buffer[] = [];
+      const format: videoFormat = this.getVideoFormat(info);
+
       return ytdl(url, { format })
-      .pipe(createWriteStream(`${path.join(__dirname, '_.mp4')}`))
+      .pipe(createWriteStream(fileName + '.mp4'))
+      .on('error', (err) => { reject(err) })
       .on('finish', async () => {
-        try {
-          unlink(`${info.videoDetails.author.name}.mp3`, () => { console.log('Temporary file removed') });
-          const video = (await new ffmpeg(`${path.join(__dirname, '_.mp4')}`))
-            .setAudioCodec('opus')
-            // .setAudioBitRate(format.audioBitrate || 128)
-            // .setAudioQuality(Number(format.audioQuality) || 128)
-          
-          await video.fnExtractSoundToMP3(`${info.videoDetails.author.name}`);
-          console.log(1222222, video);
-          // unlink(`${info.videoDetails.author.name}.mp3`, () => { console.log('Temporary file removed') });
-          // (err: Error, video) => {
-          //   if(err) {
-          //     throw err;
-          //   }
-          //   // video.setAudioCodec('opus');
-          //   // video.setAudioBitRate(320);
-          //   // video.setAudioQuality(320);
-          //   video.fnExtractSoundToMP3(`_.mp3`);
-          resolve(1)
-        } catch(err) {
-          throw err;
-        }
-      })
-      .on('error', (err) => {
-        reject(err);
+        this.extractAudio({
+          bitrate: 320,
+          inputName: fileName,
+          outputName: fileName
+        });
+        console.log(`Audio available as: ${fileName}.mp3`);
+
+        resolve();
       })
     });
   }
 
-  public async getAudioPitchKey(data: IGetPitchKeyData): Promise<any> {
-    try {
-      // const buffer = await this.extractAudioBufferByUrl(data.url);    
-      // const audioData = new Float32Array(buffer);
-      // const getPitchKey = Macleod({
-      //   bufferSize: buffer.length
-      // });
-      // const frequency = getPitchKey(audioData); 
-      // console.log(frequency);
-  
-      return 1;
-    } catch(err) {
-      throw err;
-    }
+  private getVideoFormat(info: videoInfo): videoFormat {
+    const formats: videoFormat[] = ytdl.filterFormats(info.formats, 'audio');
+
+    return formats.sort((formatA: videoFormat, formatB: videoFormat) => {
+      return formatB.audioBitrate - formatA.audioBitrate;
+    })[0]; 
+    /* sort DESC, get the highest audio bitrate available ⬆️  */
+  }
+
+  private extractAudio(data: IExtractAudioData): void {
+    const { bitrate, inputName, outputName } = data;
+    const process: ChildProcess = exec(`ffmpeg -i ${inputName}.mp4 -vn -acodec mp3 -ab ${bitrate || 128}k -ar 44100 -ac 2 ${outputName}.mp3`, 
+    (err: ExecException, stdout: string, stderr: string) => {
+      const error = err || stderr;
+      if(error) {
+        console.error(error);
+        throw error;
+      }
+      console.log(stdout);
+    });
+
+    process.on('exit', () => {
+      unlinkSync(inputName + '.mp4');
+    })
   }
 }

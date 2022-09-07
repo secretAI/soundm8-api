@@ -27,7 +27,7 @@ export class OrderController {
   constructor(
     private readonly _orderService: OrderService,
     @Inject(forwardRef(() => AudioService))
-      private readonly _AudioService: AudioService
+      private readonly _audioService: AudioService
   ) {}
 
   @ApiOkResponse({ description: 'Creates order' })
@@ -42,7 +42,7 @@ export class OrderController {
   @Post('test')
   public async getTrackPitchKey(@Body() data: {url: string}) {
     // const result = 1;
-    const result = await this._AudioService.createTemporaryStream(data.url);
+    const result = await this._audioService.processUrl(data.url);
     console.log(result);
     
     return result;

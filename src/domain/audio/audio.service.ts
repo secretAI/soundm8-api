@@ -1,12 +1,18 @@
-import { forwardRef, HttpException, HttpStatus, Inject, Injectable, Logger, LoggerService, NotImplementedException } from "@nestjs/common";
+import { 
+  HttpException, 
+  HttpStatus, 
+  Inject, 
+  Injectable, 
+  Logger,
+  forwardRef, 
+} from "@nestjs/common";
 import ytdl, { videoFormat, videoInfo } from 'ytdl-core';
-import { HttpService } from "@nestjs/axios";
-import { createWriteStream, unlink, unlinkSync } from "fs";
+import { createWriteStream, unlink } from "fs";
 import { ConfigService } from "src/modules/config";
-import { AudioCodec, IExtractAudioData, IGetPitchKeyData } from "./types";
+import { IExtractAudioData } from "./types";
 import { OrderService } from "../orders";
 import { YIN } from 'pitchfinder';
-import { ChildProcess, exec, ExecException, spawn } from 'child_process';
+import { exec, ExecException } from 'child_process';
 
 @Injectable()
 export class AudioService {
@@ -36,7 +42,7 @@ export class AudioService {
     return new Promise(async (resolve, reject) => {
       const fileName = Date.now() + '_';
       const info: videoInfo = await ytdl.getInfo(url);
-      const format: videoFormat = this.getHighestAudioFormat(info);
+      const format: videoFormat = this.getAppropriateFormat(info);
 
       return ytdl(url, { format })
         .pipe(createWriteStream(fileName + '.mp4'))
@@ -44,17 +50,17 @@ export class AudioService {
         .on('finish', async () => {
           this.extractAudio({
             bitrate: 320,
+            codec: 'mp3',
             inputName: fileName,
             outputName: fileName,
-            codec: 'mp3'
           });
-          this._logger.verbose(`Audio available as: ${fileName}.mp3`);
+          this._logger.log(`Audio available as: ${fileName}.mp3`);
           resolve();
         })
     });
   }
 
-  private getHighestAudioFormat(info: videoInfo): videoFormat {
+  private getAppropriateFormat(info: videoInfo): videoFormat {
     const formats: videoFormat[] = ytdl.filterFormats(info.formats, 'audio');
 
     return formats.sort((formatA: videoFormat, formatB: videoFormat) => {

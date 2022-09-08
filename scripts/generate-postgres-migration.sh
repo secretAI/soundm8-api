@@ -10,4 +10,4 @@ fi
 pg_dump -U postgres -p 5050 soundm8 -s -c --if-exists -f $FILE_PATH --verbose;
 echo "\nMigration created at: [ $FILE_PATH ]\nTimestamp: [ $(date -jnRu) ]";
 
-exit 0
+exit 0 

@@ -32,20 +32,6 @@ export class UserService {
     });
   }
 
-  public async checkIfExist(username: string): Promise<boolean> {
-    const user = await this._repository.findOne({
-      where: { username }
-    });
-    if(!user) {
-      throw new HttpException(
-        `User @${username} not found`, 
-        HttpStatus.NOT_FOUND
-      );
-    }
-
-    return true;
-  }
-
   public async findByName(username: string): Promise<UserEntity> {
     const user = await this._repository.findOne({
       where: { username },

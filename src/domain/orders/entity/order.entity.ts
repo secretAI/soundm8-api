@@ -6,6 +6,7 @@ import {
   IsInt, 
   IsNotEmpty, 
   IsOptional, 
+  IsString, 
   IsUrl, 
   IsUUID, 
   Length, 
@@ -21,7 +22,7 @@ import {
   PrimaryColumn,
 } from "typeorm";
 import { UserEntity } from "../../users/entity";
-import { PitchKey, PitchKeyList } from "../../../lib";
+import { Bitrate, Codec, CommonBitrates, Extension, KnownCodecs, KnownExtensions, PitchKey, PitchKeyList } from "../../../lib";
 
 @Entity('orders', {
   orderBy: { 
@@ -64,6 +65,36 @@ export class OrderEntity {
     default: 0
   })
   public bpm?: number;
+
+  @IsOptional()
+  @IsInt()
+  @Max(320)
+  @IsIn(CommonBitrates)
+  @Column('int', {
+    name: 'bitrate',
+    nullable: true
+  })
+  public bitrate?: Bitrate;
+
+  @IsOptional()
+  @IsString()
+  @IsIn(KnownCodecs)
+  @Column('varchar', {
+    name: 'codec',
+    length: 20,
+    nullable: true
+  })
+  public codec?: Codec;
+
+  @IsOptional()
+  @IsString()
+  @IsIn(KnownExtensions)
+  @Column('varchar', {
+    name: 'ext',
+    length: 5,
+    nullable: true
+  })
+  public ext?: Extension;
 
   @IsDate()
   @CreateDateColumn({

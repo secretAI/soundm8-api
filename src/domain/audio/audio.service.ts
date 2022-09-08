@@ -77,11 +77,17 @@ export class AudioService {
           (err: ExecException, stdout: string, stderr: string) => {
             if(err) {
               this._logger.error(err);
-              throw err;
+              throw new HttpException(
+                `FFMPEG Execution error: ${err}`,
+                HttpStatus.INTERNAL_SERVER_ERROR
+              );
             }
             if(stderr) {
               this._logger.error(stderr);
-              throw stderr;
+              throw new HttpException(
+                `FFMPEG Execution error: ${stderr}`,
+                HttpStatus.INTERNAL_SERVER_ERROR
+              );
             }
             this._logger.verbose(`FFMPEG output: ${stdout}`);
           })

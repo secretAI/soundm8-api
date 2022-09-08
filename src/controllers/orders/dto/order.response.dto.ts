@@ -11,12 +11,13 @@ import {
   Max, 
   IsDate, 
   IsBoolean, 
-  IsUrl
+  IsUrl,
+  IsString
 } from "class-validator";
 import { CreateDateColumn, Column } from "typeorm";
 import { OrderEntity } from "../../../domain/orders/entity";
 import { UserEntity } from "../../../domain/users/entity";
-import { PitchKey, PitchKeyList } from "../../../lib";
+import { Bitrate, Codec, Extension, KnownCodecs, KnownExtensions, PitchKey, PitchKeyList } from "../../../lib";
 
 export class OrderResponseDto {
   constructor(data: OrderEntity) {
@@ -24,6 +25,9 @@ export class OrderResponseDto {
     this.url = data.id;
     this.bpm = data.bpm;
     this.key = data.key;
+    this.bitrate = data.bitrate;
+    this.codec = data.codec;
+    this.ext = data.ext;
     this.created_at = data.created_at;
     this.is_completed = data.is_completed;
     this.user = data.user;
@@ -46,6 +50,21 @@ export class OrderResponseDto {
   @Min(30) 
   @Max(240)
   public bpm?: number;
+
+  @IsOptional()
+  @IsInt()
+  @Max(320)
+  public bitrate?: Bitrate;
+
+  @IsOptional()
+  @IsString()
+  @IsIn(KnownCodecs)
+  public codec?: Codec;
+
+  @IsOptional()
+  @IsString()
+  @IsIn(KnownExtensions)
+  public ext?: Extension
 
   @IsDate()
   @CreateDateColumn({

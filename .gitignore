@@ -1,5 +1,10 @@
 todo
-*.mp3
+
+#audio
+**/*.mp3
+**/*.mp4
+**/*.wav
+**/*.aac
 
 # compiled output
 /dist

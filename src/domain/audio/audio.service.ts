@@ -54,7 +54,7 @@ export class AudioService {
             inputName: fileName,
             outputName: fileName,
           });
-          this._logger.log(`Audio available as: ${fileName}.mp3`);
+          this._logger.log(`Audio available at: ${fileName}.mp3`);
           resolve();
         })
     });
@@ -73,18 +73,22 @@ export class AudioService {
     try {
       const { bitrate, inputName, outputName, codec } = data;
       if(codec == 'mp3') {
-        exec(`ffmpeg -i ${inputName}.mp4 -vn -acodec ${codec} -ab ${bitrate}k -ar 44100 -ac 2 ${outputName}.mp3`)
-          .on('exit', (stdout: string) => {
-            unlink(inputName + '.mp4', () => {
-              this._logger.verbose(`FFMPEG output: ${JSON.stringify(stdout)}`);
-            });
-          })
-          .on('error', (err: ExecException, stderr: string) => {
-            const error = err || stderr;
-            if(error) {
-              this._logger.log(error);
-              throw error;
+        exec(`ffmpeg -i ${inputName}.mp4 -vn -acodec ${codec} -ab ${bitrate}k -ar 44100 -ac 2 src/temp/${outputName}.mp3`, 
+          (err: ExecException, stdout: string, stderr: string) => {
+            if(err) {
+              this._logger.error(err);
+              throw err;
             }
+            if(stderr) {
+              this._logger.error(stderr);
+              throw stderr;
+            }
+            this._logger.verbose(`FFMPEG output: ${stdout}`);
+          })
+          .on('exit', (exitCode: number) => {
+            unlink(inputName + '.mp4', () => {
+              this._logger.verbose(`FFMPEG exit code: ${exitCode}`);
+            });
           });
       } else {
         throw new HttpException(
@@ -96,4 +100,6 @@ export class AudioService {
       throw err;
     }
   }
+
+
 }

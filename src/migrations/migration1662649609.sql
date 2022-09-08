@@ -3,9 +3,9 @@
 --
 
 -- Dumped from database version 14.5
--- Dumped by pg_dump version 14.2
+-- Dumped by pg_dump version 14.5 (Homebrew)
 
--- Started on 2022-09-06 13:48:02 +07
+-- Started on 2022-09-08 22:06:51 +07
 
 SET statement_timeout = 0;
 SET lock_timeout = 0;
@@ -278,7 +278,7 @@ CREATE INDEX user_telegram_id_index ON public.users USING btree (telegram_id);
 
 
 --
--- TOC entry 3479 (class 2606 OID 32430)
+-- TOC entry 3479 (class 2606 OID 39287)
 -- Name: orders FK_151b79a83ba240b0cb31b2302d1; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -287,7 +287,7 @@ ALTER TABLE ONLY public.orders
 
 
 --
--- TOC entry 3481 (class 2606 OID 32440)
+-- TOC entry 3481 (class 2606 OID 39297)
 -- Name: invite_codes FK_e5ccfc7e7062b9538b56e6f6a92; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -296,7 +296,7 @@ ALTER TABLE ONLY public.invite_codes
 
 
 --
--- TOC entry 3480 (class 2606 OID 32435)
+-- TOC entry 3480 (class 2606 OID 39292)
 -- Name: users FK_e6dfce6d759dcd3e43a39c6374b; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -304,7 +304,7 @@ ALTER TABLE ONLY public.users
     ADD CONSTRAINT "FK_e6dfce6d759dcd3e43a39c6374b" FOREIGN KEY (invite_code_id) REFERENCES public.invite_codes(id) ON UPDATE CASCADE ON DELETE CASCADE;
 
 
--- Completed on 2022-09-06 13:48:02 +07
+-- Completed on 2022-09-08 22:06:52 +07
 
 --
 -- PostgreSQL database dump complete

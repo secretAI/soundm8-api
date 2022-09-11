@@ -17,7 +17,16 @@ import {
 import { CreateDateColumn, Column } from "typeorm";
 import { OrderEntity } from "../../../domain/orders/entity";
 import { UserEntity } from "../../../domain/users/entity";
-import { Bitrate, Codec, Extension, KnownCodecs, KnownExtensions, PitchKey, PitchKeyList } from "../../../lib";
+import { 
+  Bitrate, 
+  Codec, 
+  CommonBitrates, 
+  Extension, 
+  KnownCodecs, 
+  KnownExtensions, 
+  PitchKey, 
+  PitchKeyList 
+} from "../../../lib";
 
 export class OrderResponseDto {
   constructor(data: OrderEntity) {
@@ -54,6 +63,7 @@ export class OrderResponseDto {
   @IsOptional()
   @IsInt()
   @Max(320)
+  @IsIn(CommonBitrates)
   public bitrate?: Bitrate;
 
   @IsOptional()
@@ -64,7 +74,7 @@ export class OrderResponseDto {
   @IsOptional()
   @IsString()
   @IsIn(KnownExtensions)
-  public ext?: Extension
+  public ext?: Extension;
 
   @IsDate()
   @CreateDateColumn({

@@ -1,4 +1,3 @@
-import { HttpModule } from '@nestjs/axios';
 import { forwardRef, Logger, Module } from '@nestjs/common';
 import { OrderController } from '../../controllers/orders';
 import { OrderModule } from '../orders';
@@ -11,15 +10,7 @@ import { AudioService } from './audio.service';
   exports: [AudioService],
   imports: [
     forwardRef(() => OrderModule),
-    ConfigModule,
-    HttpModule.registerAsync({
-      imports: [ConfigModule],
-      useFactory: async (configService: ConfigService) => ({
-        timeout: configService.config.http.timeout,
-        maxRedirects: configService.config.http.maxRedirects,
-      }),
-      inject: [ConfigService],
-    }),
+    ConfigModule
   ],
 })
 export class AudioModule {}

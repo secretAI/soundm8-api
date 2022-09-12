@@ -40,7 +40,7 @@ export class OrderController {
   }
 
   @Post('test')
-  public async getTrackPitchKey(@Body() data: {url: string}) {
+  public async test(@Body() data: {url: string}) {
     // const result = 1;
     const result = await this._audioService.processUrl(data.url);
     console.log(result);

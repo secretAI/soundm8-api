@@ -10,7 +10,7 @@ import {
   Max, 
   Min 
 } from "class-validator";
-import { PitchKey, PitchKeyList } from "src/lib";
+import { Bitrate, Codec, CommonBitrates, Extension, KnownCodecs, KnownExtensions, PitchKey, PitchKeyList } from "../../../lib";
 
 export class CreateOrderDto {
   @IsUrl()
@@ -41,4 +41,28 @@ export class CreateOrderDto {
   @IsString()
   @ApiProperty()
   username: string;
+
+  @IsOptional()
+  @IsIn(KnownCodecs)
+  @ApiProperty({
+    enum: KnownCodecs,
+    required: false
+  })
+  codec?: Codec;
+
+  @IsOptional()
+  @IsIn(KnownExtensions)
+  @ApiProperty({
+    enum: KnownExtensions,
+    required: false
+  })
+  ext?: Extension;
+
+  @IsOptional()
+  @IsIn(CommonBitrates)
+  @ApiProperty({
+    enum: CommonBitrates,
+    required: false
+  })
+  bitrate?: Bitrate;
 }

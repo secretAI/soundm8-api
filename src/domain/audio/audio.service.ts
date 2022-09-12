@@ -12,7 +12,8 @@ import { ConfigService } from "src/modules/config";
 import { IExtractAudioData } from "./types";
 import { OrderService } from "../orders";
 import { YIN } from 'pitchfinder';
-import { exec, ExecException } from 'child_process';
+import { ChildProcess, exec, ExecException } from 'child_process';
+import { Codec } from "src/lib";
 
 @Injectable()
 export class AudioService {
@@ -26,10 +27,7 @@ export class AudioService {
     private readonly _config: ConfigService,
     @Inject(forwardRef(() => OrderService))
       private readonly _orderService: OrderService,
-  ) {
-    this.apiUrl = this._config.config.sonicApi.url;
-    this.apiKey = this._config.config.sonicApi.apiKey;
-  }
+  ) {}
 
   public async processUrl(url: string): Promise<void> {
     if(!ytdl.validateURL(url)) {
@@ -40,72 +38,89 @@ export class AudioService {
     }
 
     return new Promise(async (resolve, reject) => {
-      const fileName = Date.now() + '_';
+      const filename = Date.now().toString();
       const info: videoInfo = await ytdl.getInfo(url);
       const format: videoFormat = this.getAppropriateFormat(info);
+      console.log('SAMPLE BITRATE:\n', format.audioBitrate);
 
       return ytdl(url, { format })
-        .pipe(createWriteStream(fileName + '.mp4'))
+        .pipe(createWriteStream(filename + '.mp4'))
         .on('error', (err) => reject(err))
         .on('finish', async () => {
           this.extractAudio({
+            filename,
             bitrate: 320,
-            codec: 'mp3',
-            inputName: fileName,
-            outputName: fileName,
+            ext: 'wav'
           });
-          this._logger.log(`Audio available at: ${fileName}.mp3`);
+          /* ToDo: switch mp3 to ${ext} ⬇️ */
+          this._logger.log(`Audio available at: ${filename}.mp3`);
           resolve();
         })
     });
   }
 
   private getAppropriateFormat(info: videoInfo): videoFormat {
-    const formats: videoFormat[] = ytdl.filterFormats(info.formats, 'audio');
+    const formats: videoFormat[] = ytdl.filterFormats(info.formats, 'audioonly');
 
-    return formats.sort((formatA: videoFormat, formatB: videoFormat) => {
-      return formatB.audioBitrate - formatA.audioBitrate;
+    return formats.sort((format: videoFormat, _format: videoFormat) => {
+      return _format.audioBitrate - format.audioBitrate;
     })[0]; 
     /* sort DESC, get the highest audio bitrate available ⬆️  */
   }
 
   private extractAudio(data: IExtractAudioData): void {
-    try {
-      const { bitrate, inputName, outputName, codec } = data;
-      if(codec == 'mp3') {
-        exec(`ffmpeg -i ${inputName}.mp4 -vn -acodec ${codec} -ab ${bitrate}k -ar 44100 -ac 2 src/temp/${outputName}.mp3`, 
-          (err: ExecException, stdout: string, stderr: string) => {
-            if(err) {
-              this._logger.error(err);
-              throw new HttpException(
-                `FFMPEG Execution error: ${err}`,
-                HttpStatus.INTERNAL_SERVER_ERROR
-              );
-            }
-            if(stderr) {
-              this._logger.error(stderr);
-              throw new HttpException(
-                `FFMPEG Execution error: ${stderr}`,
-                HttpStatus.INTERNAL_SERVER_ERROR
-              );
-            }
-            this._logger.verbose(`FFMPEG output: ${stdout}`);
-          })
-          .on('exit', (exitCode: number) => {
-            unlink(inputName + '.mp4', () => {
-              this._logger.verbose(`FFMPEG exit code: ${exitCode}`);
-            });
-          });
-      } else {
+    const { bitrate, filename, ext } = data;
+    let codec: Codec;
+    const callback = (err: ExecException, stdout: string) => {
+      if(err) {
+        this._logger.error(err);
         throw new HttpException(
-          `Codec ${codec} is unsupported`,
-          HttpStatus.NOT_IMPLEMENTED
+          err,
+          HttpStatus.INTERNAL_SERVER_ERROR
         );
       }
-    } catch(err) {
-      throw err;
+      if(stdout) {
+        this._logger.verbose(`FFMPEG output: ${stdout}`);
+      }
+    };
+    /* -ab strange behavior ⬇️ EBAL TOGO VSE */
+    if(ext == 'mp3') {
+      codec = 'mp3';
+      const process: ChildProcess = exec(`ffmpeg -i ${filename}.mp4 -acodec ${codec} -vn -ab ${bitrate}k -ar 44100 -ac 2 ${filename}.${ext}`, callback);
+      console.log(process);
+      process.on('exit', (exitCode: number) => {
+        unlink(filename + '.mp4', () => {
+          this._logger.verbose(`FFMPEG exit code: ${exitCode}`);
+        });
+      });
+      process.on('error', (err: Error) => {
+        unlink(filename + '.mp4', () => { throw err });
+      });
+
+      return;
     }
+    if(ext == 'wav') {
+      codec = 'pcm_s16le';
+      const process: ChildProcess = exec(`ffmpeg -i ${filename}.mp4 -acodec ${codec} -vn -ar 44100 -ac 2 ${filename}.${ext}`, callback)
+      process.on('exit', (exitCode: number) => {
+        unlink(filename + '.mp4', () => {
+          this._logger.verbose(`FFMPEG exit code: ${exitCode}`);
+        });
+      });
+      process.on('error', (err: Error) => {
+        unlink(filename + '.mp4', () => { throw err });
+      });
+
+      return;
+    }
+
+    throw new HttpException(
+      'Error during audio extraction', 
+      HttpStatus.INTERNAL_SERVER_ERROR
+    );
   }
 
+  public async getPitchKey() {
 
+  }
 }

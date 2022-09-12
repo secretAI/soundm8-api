@@ -1,9 +1,7 @@
+import { Codec, Extension } from "../../../lib";
+
 export interface IExtractAudioData {
   bitrate: number;
-  inputName: string;
-  outputName: string;
-  codec?: AudioCodec;
+  filename: string;
+  ext: Extension;
 };
-
-
-export type AudioCodec = 'mp3'|'opus';

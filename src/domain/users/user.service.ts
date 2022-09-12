@@ -58,8 +58,8 @@ export class UserService {
   public async activateViaCode(data: IActivateUserData): Promise<UserEntity> {
     const { username, code } = data;
     const codeEntity = await this._inviteCodeService.findByBody(code);
-    const userEnity = await this.findByName(username);
-    if(userEnity.is_activated) {
+    const userEntity = await this.findByName(username);
+    if(userEntity.is_activated) {
       throw new HttpException(
         `@${username}'s account is already activated`,
         HttpStatus.BAD_REQUEST
@@ -67,14 +67,14 @@ export class UserService {
     }
     await this._inviteCodeService.setUsedStatus({
       body: code,
-      userId: userEnity.id
+      userId: userEntity.id
     });
-    userEnity.is_activated = true;
-    userEnity.invite_code = {
+    userEntity.is_activated = true;
+    userEntity.invite_code = {
       ...codeEntity,
       is_used: true
     };
-    const result = await this._repository.save(userEnity);
+    const result = await this._repository.save(userEntity);
     
     return result;
   }

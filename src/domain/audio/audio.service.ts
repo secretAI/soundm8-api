@@ -41,7 +41,6 @@ export class AudioService {
       const filename = Date.now().toString();
       const info: videoInfo = await ytdl.getInfo(url);
       const format: videoFormat = this.getAppropriateFormat(info);
-      console.log('SAMPLE BITRATE:\n', format.audioBitrate);
 
       return ytdl(url, { format })
         .pipe(createWriteStream(filename + '.mp4'))
@@ -83,11 +82,10 @@ export class AudioService {
         this._logger.verbose(`FFMPEG output: ${stdout}`);
       }
     };
-    /* -ab strange behavior ⬇️ EBAL TOGO VSE */
+    /* -ab strange behavior ⬇️ fixed 😇 */
     if(ext == 'mp3') {
       codec = 'mp3';
       const process: ChildProcess = exec(`ffmpeg -i ${filename}.mp4 -acodec ${codec} -vn -ab ${bitrate}k -ar 44100 -ac 2 ${filename}.${ext}`, callback);
-      console.log(process);
       process.on('exit', (exitCode: number) => {
         unlink(filename + '.mp4', () => {
           this._logger.verbose(`FFMPEG exit code: ${exitCode}`);
@@ -120,7 +118,5 @@ export class AudioService {
     );
   }
 
-  public async getPitchKey() {
-
-  }
+  public async getPitchKey() {}
 }

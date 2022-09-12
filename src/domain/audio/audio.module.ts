@@ -1,25 +1,25 @@
-import { HttpModule } from "@nestjs/axios";
-import { forwardRef, Logger, Module } from "@nestjs/common";
-import { OrderController } from "../../controllers/orders";
-import { OrderModule } from "../orders";
-import { ConfigModule, ConfigService } from "../../modules/config";
-import { AudioService } from "./audio.service";
+import { HttpModule } from '@nestjs/axios';
+import { forwardRef, Logger, Module } from '@nestjs/common';
+import { OrderController } from '../../controllers/orders';
+import { OrderModule } from '../orders';
+import { ConfigModule, ConfigService } from '../../modules/config';
+import { AudioService } from './audio.service';
 
 @Module({
-  controllers: [ OrderController ],
-  providers: [ AudioService, Logger ],
-  exports: [ AudioService ],
-  imports: [ 
-    forwardRef(() => OrderModule), 
+  controllers: [OrderController],
+  providers: [AudioService, Logger],
+  exports: [AudioService],
+  imports: [
+    forwardRef(() => OrderModule),
     ConfigModule,
     HttpModule.registerAsync({
-      imports: [ ConfigModule ],
+      imports: [ConfigModule],
       useFactory: async (configService: ConfigService) => ({
         timeout: configService.config.http.timeout,
         maxRedirects: configService.config.http.maxRedirects,
       }),
-      inject: [ ConfigService ],
-    })
-  ]
+      inject: [ConfigService],
+    }),
+  ],
 })
 export class AudioModule {}

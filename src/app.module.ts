@@ -5,26 +5,29 @@ import { OrderModule } from './domain/orders';
 import { UserModule } from './domain/users';
 import { ConfigModule } from './modules/config';
 import { TypeOrmModule } from './modules/typeorm';
-import { 
-  HttpErrorFilterProvider, 
+import {
+  HttpErrorFilterProvider,
   TypeOrmErrorFilterProvider,
-  LoggingInterceptorProvider
+  LoggingInterceptorProvider,
 } from './shared';
 
 dotenv.config();
 
 @Module({
-  imports: [ 
-    ConfigModule, 
+  imports: [
+    ConfigModule,
     TypeOrmModule,
     OrderModule,
     UserModule,
-    InviteCodeModule
+    InviteCodeModule,
   ],
-  providers: process.env.NODE_ENV == 'production' ? [ LoggingInterceptorProvider ] : [ 
-    HttpErrorFilterProvider,
-    TypeOrmErrorFilterProvider,
-    LoggingInterceptorProvider,
-  ]
+  providers:
+    process.env.NODE_ENV == 'production'
+      ? [LoggingInterceptorProvider]
+      : [
+          HttpErrorFilterProvider,
+          TypeOrmErrorFilterProvider,
+          LoggingInterceptorProvider,
+        ],
 })
 export class AppModule {}

@@ -4,5 +4,5 @@ import { HttpErrorFilter } from './http-error.filter';
 
 export const HttpErrorFilterProvider: Provider = {
   provide: APP_FILTER,
-  useClass: HttpErrorFilter
+  useClass: HttpErrorFilter,
 };

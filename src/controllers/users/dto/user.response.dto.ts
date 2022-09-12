@@ -1,16 +1,16 @@
-import { ApiProperty } from "@nestjs/swagger";
-import { 
+import { ApiProperty } from '@nestjs/swagger';
+import {
   IsBoolean,
   IsDate,
   IsInt,
-  IsNotEmpty, 
-  IsString, 
-  IsUUID, 
-  Length, 
-  UUIDVersion
-} from "class-validator";
-import { InviteCodeEntity } from "../../../domain/invite-codes/entity";
-import { UserEntity } from "../../../domain/users/entity";
+  IsNotEmpty,
+  IsString,
+  IsUUID,
+  Length,
+  UUIDVersion,
+} from 'class-validator';
+import { InviteCodeEntity } from '../../../domain/invite-codes/entity';
+import { UserEntity } from '../../../domain/users/entity';
 
 export class UserResponseDto {
   constructor(data: UserEntity) {

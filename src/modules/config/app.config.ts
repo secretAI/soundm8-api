@@ -10,12 +10,12 @@ type DatabaseConfig = {
 type SonicApiConfig = {
   url: string;
   apiKey: string;
-}
+};
 
 type HttpConfig = {
   timeout: number;
   maxRedirects: number;
-}
+};
 
 export type AppConfig = {
   env: string;

@@ -5,4 +5,4 @@ export type TypeOrmErrorFilterResponse = {
   query: string;
   params: string[];
   timestamp: string;
-}
+};

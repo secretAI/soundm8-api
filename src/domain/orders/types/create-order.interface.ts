@@ -1,4 +1,4 @@
-import { Bitrate, Codec, Extension, PitchKey } from "../../../lib";
+import { Bitrate, Codec, Extension, PitchKey } from '../../../lib';
 
 export interface ICreateOrderData {
   url: string;

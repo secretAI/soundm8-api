@@ -8,21 +8,15 @@ import { ConfigService } from '../config';
 @Injectable()
 export class TypeOrmConfig implements TypeOrmOptionsFactory {
   private readonly _logger: Logger = new Logger('* TypeOrm', {
-    timestamp: false
+    timestamp: false,
   });
 
   constructor(private readonly _service: ConfigService) {}
 
   public createTypeOrmOptions(): TypeOrmModuleOptions {
-    const { 
-      host, 
-      port, 
-      database, 
-      username, 
-      password, 
-      driver 
-    } = this._service.config.db;
-    const { env } = this._service.config; 
+    const { host, port, database, username, password, driver } =
+      this._service.config.db;
+    const { env } = this._service.config;
     this._logger.verbose('TypeOrm options generated');
 
     return {
@@ -32,15 +26,11 @@ export class TypeOrmConfig implements TypeOrmOptionsFactory {
       host,
       port,
       type: driver as TypeOrmModuleOptions['driver'],
-      synchronize: env == 'development', /* false for production */
+      synchronize: env == 'development' /* false for production */,
       keepConnectionAlive: false,
       logging: false,
       applicationName: 'soundm8',
-      entities: [
-        OrderEntity,
-        UserEntity,
-        InviteCodeEntity
-      ]
+      entities: [OrderEntity, UserEntity, InviteCodeEntity],
     };
   }
 }

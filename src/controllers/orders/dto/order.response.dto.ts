@@ -1,32 +1,32 @@
-import { 
-  IsUUID, 
-  UUIDVersion, 
-  IsNotEmpty, 
-  Length, 
-  IsFQDN, 
-  IsOptional, 
-  IsIn, 
-  IsInt, 
-  Min, 
-  Max, 
-  IsDate, 
-  IsBoolean, 
+import {
+  IsUUID,
+  UUIDVersion,
+  IsNotEmpty,
+  Length,
+  IsFQDN,
+  IsOptional,
+  IsIn,
+  IsInt,
+  Min,
+  Max,
+  IsDate,
+  IsBoolean,
   IsUrl,
-  IsString
-} from "class-validator";
-import { CreateDateColumn, Column } from "typeorm";
-import { OrderEntity } from "../../../domain/orders/entity";
-import { UserEntity } from "../../../domain/users/entity";
-import { 
-  Bitrate, 
-  Codec, 
-  CommonBitrates, 
-  Extension, 
-  KnownCodecs, 
-  KnownExtensions, 
-  PitchKey, 
-  PitchKeyList 
-} from "../../../lib";
+  IsString,
+} from 'class-validator';
+import { CreateDateColumn, Column } from 'typeorm';
+import { OrderEntity } from '../../../domain/orders/entity';
+import { UserEntity } from '../../../domain/users/entity';
+import {
+  Bitrate,
+  Codec,
+  CommonBitrates,
+  Extension,
+  KnownCodecs,
+  KnownExtensions,
+  PitchKey,
+  PitchKeyList,
+} from '../../../lib';
 
 export class OrderResponseDto {
   constructor(data: OrderEntity) {
@@ -56,7 +56,7 @@ export class OrderResponseDto {
 
   @IsOptional()
   @IsInt()
-  @Min(30) 
+  @Min(30)
   @Max(240)
   public bpm?: number;
 
@@ -79,14 +79,14 @@ export class OrderResponseDto {
   @IsDate()
   @CreateDateColumn({
     name: 'created_at',
-    default: () => 'now()::timestamp'
+    default: () => 'now()::timestamp',
   })
   public created_at: Date;
 
   @IsBoolean()
   @Column('bool', {
     name: 'is_completed',
-    default: false
+    default: false,
   })
   public is_completed: boolean;
 

@@ -1,4 +1,9 @@
-import { HttpException, HttpStatus, Injectable, NotFoundException } from '@nestjs/common';
+import {
+  HttpException,
+  HttpStatus,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
 import { ConfigService as NestConfigService } from '@nestjs/config';
 import { KnownEnvironmentVariables } from '../../lib/known-variables';
 import { AppConfig } from './app.config';
@@ -6,14 +11,12 @@ import { AppConfig } from './app.config';
 @Injectable()
 export class ConfigService {
   constructor(
-    private readonly _config: NestConfigService<KnownEnvironmentVariables>,
+    private readonly _config: NestConfigService<KnownEnvironmentVariables>
   ) {}
 
-  private getEnvironmentVariable(
-    key: keyof KnownEnvironmentVariables,
-  ): string {
+  private getEnvironmentVariable(key: keyof KnownEnvironmentVariables): string {
     const value = this._config.get(key);
-    if(!value) {
+    if (!value) {
       throw new NotFoundException(`* Variable ${key} not found in .env`);
     }
 
@@ -29,17 +32,17 @@ export class ConfigService {
         database: this.getEnvironmentVariable('DB_DATABASE'),
         username: this.getEnvironmentVariable('DB_USER'),
         password: this.getEnvironmentVariable('DB_PASS'),
-        driver: this.getEnvironmentVariable('DB_DRIVER')
+        driver: this.getEnvironmentVariable('DB_DRIVER'),
       },
       /* ToDo remove this */
       sonicApi: {
         url: this.getEnvironmentVariable('SONIC_API_URL'),
-        apiKey: this.getEnvironmentVariable('SONIC_API_KEY')
+        apiKey: this.getEnvironmentVariable('SONIC_API_KEY'),
       },
       http: {
         maxRedirects: Number(this.getEnvironmentVariable('HTTP_MAX_REDIRECTS')),
-        timeout: Number(this.getEnvironmentVariable('HTTP_TIMEOUT'))
-      }
-    }
+        timeout: Number(this.getEnvironmentVariable('HTTP_TIMEOUT')),
+      },
+    };
   }
 }

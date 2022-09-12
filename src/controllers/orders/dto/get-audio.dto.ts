@@ -1,4 +1,4 @@
-import { IsUrl, IsString, IsNotEmpty } from "class-validator";
+import { IsUrl, IsString, IsNotEmpty } from 'class-validator';
 
 export class GetAudioTrackDto {
   @IsNotEmpty()

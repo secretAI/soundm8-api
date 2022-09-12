@@ -6,14 +6,12 @@ import { UserEntity } from './entity';
 import { InviteCodeModule } from '../invite-codes';
 
 @Module({
-  controllers: [ UserController ],
-  providers: [ UserService ],
-  exports: [ UserService ],
+  controllers: [UserController],
+  providers: [UserService],
+  exports: [UserService],
   imports: [
-    TypeOrmModule.forFeature([
-      UserEntity
-    ]),
-    forwardRef(() => InviteCodeModule)
-  ]
+    TypeOrmModule.forFeature([UserEntity]),
+    forwardRef(() => InviteCodeModule),
+  ],
 })
 export class UserModule {}

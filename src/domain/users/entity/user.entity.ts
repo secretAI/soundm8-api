@@ -1,37 +1,37 @@
-import { 
+import {
   IsBoolean,
   IsDate,
   IsEmail,
-  IsHash, 
-  IsInt, 
-  IsNotEmpty,  
-  IsString, 
-  IsUUID, 
-  Length, 
-} from "class-validator";
-import { 
-  Column, 
-  CreateDateColumn, 
-  Entity, 
-  Index, 
-  JoinColumn, 
-  OneToMany, 
-  OneToOne, 
-  PrimaryColumn, 
-} from "typeorm";
-import { InviteCodeEntity } from "../../invite-codes/entity";
-import { OrderEntity } from "../../orders/entity";
+  IsHash,
+  IsInt,
+  IsNotEmpty,
+  IsString,
+  IsUUID,
+  Length,
+} from 'class-validator';
+import {
+  Column,
+  CreateDateColumn,
+  Entity,
+  Index,
+  JoinColumn,
+  OneToMany,
+  OneToOne,
+  PrimaryColumn,
+} from 'typeorm';
+import { InviteCodeEntity } from '../../invite-codes/entity';
+import { OrderEntity } from '../../orders/entity';
 
 @Entity('users', {
   orderBy: {
-    created_at: 'DESC'
-  }
+    created_at: 'DESC',
+  },
 })
 export class UserEntity {
   @IsUUID()
   @PrimaryColumn('uuid', {
     name: 'id',
-    default: () => 'gen_random_uuid()'
+    default: () => 'gen_random_uuid()',
   })
   public readonly id: string;
 
@@ -41,7 +41,7 @@ export class UserEntity {
   @Column('varchar', {
     name: 'username',
     nullable: false,
-    unique: true
+    unique: true,
   })
   public username: string;
 
@@ -51,28 +51,28 @@ export class UserEntity {
   @Column('bigint', {
     name: 'telegram_id',
     nullable: true,
-    unique: true
+    unique: true,
   })
   public telegram_id: number;
 
   @IsDate()
   @CreateDateColumn({
     name: 'created_at',
-    default: () => 'now()::timestamp'
+    default: () => 'now()::timestamp',
   })
   public created_at: Date;
 
   @IsBoolean()
   @Column('bool', {
     name: 'is_activated',
-    default: false
+    default: false,
   })
   public is_activated: boolean;
 
   /* relations */
-  @OneToOne(() => InviteCodeEntity, code => code.user, {
+  @OneToOne(() => InviteCodeEntity, (code) => code.user, {
     onDelete: 'CASCADE',
-    onUpdate: 'CASCADE'
+    onUpdate: 'CASCADE',
   })
   @JoinColumn({
     name: 'invite_code_id',
@@ -82,9 +82,9 @@ export class UserEntity {
   @IsString()
   public invite_code_id?: string;
 
-  @OneToMany(() => OrderEntity, order => order.user, {
+  @OneToMany(() => OrderEntity, (order) => order.user, {
     onDelete: 'CASCADE',
-    onUpdate: 'CASCADE'
+    onUpdate: 'CASCADE',
   })
   public orders?: OrderEntity[];
-};
+}

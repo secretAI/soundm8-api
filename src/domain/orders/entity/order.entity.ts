@@ -1,39 +1,48 @@
-import { 
+import {
   IsBoolean,
   IsDate,
-  IsFQDN, 
-  IsIn, 
-  IsInt, 
-  IsNotEmpty, 
-  IsOptional, 
-  IsString, 
-  IsUrl, 
-  IsUUID, 
-  Length, 
-  Max, 
-  Min 
-} from "class-validator";
-import { 
-  Column, 
-  CreateDateColumn, 
-  Entity, 
-  Index, 
-  ManyToOne, 
+  IsFQDN,
+  IsIn,
+  IsInt,
+  IsNotEmpty,
+  IsOptional,
+  IsString,
+  IsUrl,
+  IsUUID,
+  Length,
+  Max,
+  Min,
+} from 'class-validator';
+import {
+  Column,
+  CreateDateColumn,
+  Entity,
+  Index,
+  ManyToOne,
   PrimaryColumn,
-} from "typeorm";
-import { UserEntity } from "../../users/entity";
-import { Bitrate, Codec, CommonBitrates, Extension, KnownCodecs, KnownExtensions, PitchKey, PitchKeyList } from "../../../lib";
+} from 'typeorm';
+import { UserEntity } from '../../users/entity';
+import {
+  Bitrate,
+  Codec,
+  CommonBitrates,
+  Extension,
+  KnownCodecs,
+  KnownExtensions,
+  PitchKey,
+  PitchKeyList,
+} from '../../../lib';
 
 @Entity('orders', {
-  orderBy: { 
-    created_at: 'DESC' 
-  }
+  orderBy: {
+    created_at: 'DESC',
+  },
 })
 export class OrderEntity {
   @IsUUID()
   @PrimaryColumn('uuid', {
     name: 'id',
-    default: () => 'gen_random_uuid()'
+    default: () => 'gen_random_uuid()',
   })
   public readonly id: string;
 
@@ -44,7 +53,7 @@ export class OrderEntity {
   @Column('text', {
     name: 'url',
     unique: true,
-    nullable: false
+    nullable: false,
   })
   public url: string;
 
@@ -52,17 +61,17 @@ export class OrderEntity {
   @IsIn(PitchKeyList)
   @Column('enum', {
     name: 'key',
-    enum: PitchKeyList
+    enum: PitchKeyList,
   })
   public key?: PitchKey;
 
   @IsOptional()
   @IsInt()
-  @Min(30) 
+  @Min(30)
   @Max(240)
   @Column('int', {
     name: 'bpm',
-    default: 0
+    default: 0,
   })
   public bpm?: number;
 
@@ -72,7 +81,7 @@ export class OrderEntity {
   @IsIn(CommonBitrates)
   @Column('int', {
     name: 'bitrate',
-    nullable: true
+    nullable: true,
   })
   public bitrate?: Bitrate;
 
@@ -82,7 +91,7 @@ export class OrderEntity {
   @Column('varchar', {
     name: 'codec',
     length: 20,
-    nullable: true
+    nullable: true,
   })
   public codec?: Codec;
 
@@ -92,29 +101,28 @@ export class OrderEntity {
   @Column('varchar', {
     name: 'ext',
     length: 5,
-    nullable: true
+    nullable: true,
   })
   public ext?: Extension;
 
   @IsDate()
   @CreateDateColumn({
     name: 'created_at',
-    default: () => 'now()::timestamp'
+    default: () => 'now()::timestamp',
   })
   public created_at: Date;
 
   @IsBoolean()
   @Column('bool', {
     name: 'is_completed',
-    default: false
+    default: false,
   })
   public is_completed: boolean;
 
   /* relations */
-  @ManyToOne(
-    () => UserEntity, 
-    user => user.orders,
-    { onDelete: 'SET NULL', onUpdate: 'CASCADE' }
-  )
+  @ManyToOne(() => UserEntity, (user) => user.orders, {
+    onDelete: 'SET NULL',
+    onUpdate: 'CASCADE',
+  })
   public user?: UserEntity;
-};
+}

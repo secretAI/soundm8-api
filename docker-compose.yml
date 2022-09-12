@@ -7,19 +7,19 @@ services:
       - POSTGRES_PASSWORD=${DB_PASS}
       - POSTGRES_DB=${DB_DATABASE}
       - POSTGRES_USER=${DB_USER}
-    build: 
+    build:
       context: ./
-      dockerfile: ./docker/images/Dockerfile.db 
+      dockerfile: ./docker/images/Dockerfile.db
     volumes:
       - ./.database/postgres/data:/data/
     ports:
       - 5432:5432
-  app: 
+  app:
     container_name: 'api'
     environment:
       - DB_HOST=${DOCKER_CONTAINER_DB_HOST}
       - DB_PORT=${DOCKER_CONTAINER_DB_PORT}
-    build: 
+    build:
       context: ./
       dockerfile: ./docker/images/Dockerfile.api
     ports:

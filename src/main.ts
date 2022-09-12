@@ -13,6 +13,8 @@ async function bootstrap() {
   generateDocumentation(app); /* swagger */
 
   await app.listen(port);
-  console.log(`(￣▽￣)ノ\nAPI -> http://localhost:${port}/\nDocs -> http://localhost:${port}/doc`);
-};
+  console.log(
+    `(￣▽￣)ノ\nAPI -> http://localhost:${port}/\nDocs -> http://localhost:${port}/doc`
+  );
+}
 bootstrap();

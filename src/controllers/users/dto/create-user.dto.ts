@@ -1,11 +1,11 @@
-import { 
+import {
   IsInt,
-  IsNotEmpty, 
-  IsOptional, 
-  IsString, 
-  Length 
-} from "class-validator";
-import { ApiProperty } from "@nestjs/swagger";
+  IsNotEmpty,
+  IsOptional,
+  IsString,
+  Length,
+} from 'class-validator';
+import { ApiProperty } from '@nestjs/swagger';
 
 export class CreateUserDto {
   @IsNotEmpty()

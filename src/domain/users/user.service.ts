@@ -1,25 +1,31 @@
-import { forwardRef, HttpException, HttpStatus, Inject, Injectable } from "@nestjs/common";
-import { InjectRepository } from "@nestjs/typeorm";
-import { Repository } from "typeorm";
-import { UserEntity } from "../../domain/users/entity";
-import { ICreateUserData } from "./types";
-import { InviteCodeService } from "../../domain/invite-codes";
-import { IActivateUserData } from "./types/activate-user.interface";
+import {
+  forwardRef,
+  HttpException,
+  HttpStatus,
+  Inject,
+  Injectable,
+} from '@nestjs/common';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Repository } from 'typeorm';
+import { UserEntity } from '../../domain/users/entity';
+import { ICreateUserData } from './types';
+import { InviteCodeService } from '../../domain/invite-codes';
+import { IActivateUserData } from './types/activate-user.interface';
 
 @Injectable()
 export class UserService {
   constructor(
     @Inject(forwardRef(() => InviteCodeService))
-      private readonly _inviteCodeService: InviteCodeService,
-    @InjectRepository(UserEntity) 
-      private readonly _repository: Repository<UserEntity>
+    private readonly _inviteCodeService: InviteCodeService,
+    @InjectRepository(UserEntity)
+    private readonly _repository: Repository<UserEntity>
   ) {}
 
   public async findAll(): Promise<UserEntity[]> {
     return await this._repository.find({
       relations: {
-        invite_code: true
-      }
+        invite_code: true,
+      },
     });
   }
 
@@ -27,8 +33,8 @@ export class UserService {
     return await this._repository.findOne({
       where: { id },
       relations: {
-        invite_code: true
-      }
+        invite_code: true,
+      },
     });
   }
 
@@ -36,12 +42,12 @@ export class UserService {
     const user = await this._repository.findOne({
       where: { username },
       relations: {
-        invite_code: true
-      }
+        invite_code: true,
+      },
     });
-    if(!user) {
+    if (!user) {
       throw new HttpException(
-        `User @${username} not found`, 
+        `User @${username} not found`,
         HttpStatus.NOT_FOUND
       );
     }
@@ -51,7 +57,7 @@ export class UserService {
 
   public async create(data: ICreateUserData): Promise<UserEntity> {
     return await this._repository.save({
-      ...data
+      ...data,
     });
   }
 
@@ -59,7 +65,7 @@ export class UserService {
     const { username, code } = data;
     const codeEntity = await this._inviteCodeService.findByBody(code);
     const userEntity = await this.findByName(username);
-    if(userEntity.is_activated) {
+    if (userEntity.is_activated) {
       throw new HttpException(
         `@${username}'s account is already activated`,
         HttpStatus.BAD_REQUEST
@@ -67,15 +73,15 @@ export class UserService {
     }
     await this._inviteCodeService.setUsedStatus({
       body: code,
-      userId: userEntity.id
+      userId: userEntity.id,
     });
     userEntity.is_activated = true;
     userEntity.invite_code = {
       ...codeEntity,
-      is_used: true
+      is_used: true,
     };
     const result = await this._repository.save(userEntity);
-    
+
     return result;
   }
 }

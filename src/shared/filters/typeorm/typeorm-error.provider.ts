@@ -4,5 +4,5 @@ import { TypeOrmErrorFilter } from './typeorm-error.filter';
 
 export const TypeOrmErrorFilterProvider: Provider = {
   provide: APP_FILTER,
-  useClass: TypeOrmErrorFilter
+  useClass: TypeOrmErrorFilter,
 };

@@ -1,10 +1,5 @@
-import { ApiParam, ApiProperty } from "@nestjs/swagger";
-import {
-  IsNotEmpty, 
-  IsOptional, 
-  IsString, 
-  Length 
-} from "class-validator";
+import { ApiParam, ApiProperty } from '@nestjs/swagger';
+import { IsNotEmpty, IsOptional, IsString, Length } from 'class-validator';
 
 export class ActivateUserDto {
   @IsNotEmpty()
@@ -17,7 +12,7 @@ export class ActivateUserDto {
   @Length(18, 18)
   @ApiProperty({
     minLength: 18,
-    maxLength: 18
+    maxLength: 18,
   })
   public code: string;
 }

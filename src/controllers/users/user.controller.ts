@@ -1,8 +1,25 @@
-import { Body, Controller, Get, HttpCode, HttpStatus, Param, Post } from "@nestjs/common";
-import { ApiBadRequestResponse, ApiCreatedResponse, ApiForbiddenResponse, ApiNotFoundResponse, ApiOkResponse, ApiResponse, ApiTags, getSchemaPath } from "@nestjs/swagger";
-import { UserService } from "src/domain/users";
-import { UserEntity } from "src/domain/users/entity"; 
-import { UserResponseDto, CreateUserDto, ActivateUserDto } from "./dto";
+import {
+  Body,
+  Controller,
+  Get,
+  HttpCode,
+  HttpStatus,
+  Param,
+  Post,
+} from '@nestjs/common';
+import {
+  ApiBadRequestResponse,
+  ApiCreatedResponse,
+  ApiForbiddenResponse,
+  ApiNotFoundResponse,
+  ApiOkResponse,
+  ApiResponse,
+  ApiTags,
+  getSchemaPath,
+} from '@nestjs/swagger';
+import { UserService } from 'src/domain/users';
+import { UserEntity } from 'src/domain/users/entity';
+import { UserResponseDto, CreateUserDto, ActivateUserDto } from './dto';
 import { User } from './';
 
 @ApiTags('Users')
@@ -11,15 +28,15 @@ export class UserController {
   constructor(private readonly _service: UserService) {}
 
   @Get('/')
-  @ApiOkResponse({ 
-    description: 'Get all users / empty array', 
-    isArray: true
+  @ApiOkResponse({
+    description: 'Get all users / empty array',
+    isArray: true,
   })
   @ApiBadRequestResponse({ description: 'Class validator failure' })
   public async findAll(): Promise<UserEntity[]> {
     const result: UserEntity[] = await this._service.findAll();
 
-    return result.map(user => new UserResponseDto(user));
+    return result.map((user) => new UserResponseDto(user));
   }
 
   @Get('/:name')

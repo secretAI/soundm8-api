@@ -12,5 +12,5 @@ import { ConfigService } from './config.service';
   ],
   providers: [ConfigProvider],
   exports: [ConfigService],
-})     
+})
 export class ConfigModule {}

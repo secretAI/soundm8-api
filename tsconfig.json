@@ -19,12 +19,6 @@
     "noFallthroughCasesInSwitch": false,
     "esModuleInterop": true
   },
-  "include": [
-    "src",
-    "swagger"
-  ],
-  "exclude": [
-    "test",
-    "scripts"
-  ]
+  "include": ["src", "swagger"],
+  "exclude": ["test", "scripts"]
 }

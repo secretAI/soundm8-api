@@ -1,7 +1,14 @@
-import { IsDate, IsString, IsUUID, Length, Matches, UUIDVersion } from "class-validator";
-import { InviteCodeEntity } from "../../../domain/invite-codes/entity";
-import { UserEntity } from "../../../domain/users/entity";
-import { ApiProperty } from "@nestjs/swagger";
+import {
+  IsDate,
+  IsString,
+  IsUUID,
+  Length,
+  Matches,
+  UUIDVersion,
+} from 'class-validator';
+import { InviteCodeEntity } from '../../../domain/invite-codes/entity';
+import { UserEntity } from '../../../domain/users/entity';
+import { ApiProperty } from '@nestjs/swagger';
 
 export class InviteCodeResponseDto {
   constructor(data: InviteCodeEntity) {

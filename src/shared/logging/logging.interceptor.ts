@@ -1,20 +1,20 @@
 import {
-  CallHandler, 
-  ExecutionContext, 
-  HttpException, 
-  HttpStatus, 
-  Injectable, 
-  Logger, 
-  NestInterceptor, 
-  RequestMethod
-} from "@nestjs/common";
-import { Request } from "express";
-import { Observable, tap } from "rxjs";
+  CallHandler,
+  ExecutionContext,
+  HttpException,
+  HttpStatus,
+  Injectable,
+  Logger,
+  NestInterceptor,
+  RequestMethod,
+} from '@nestjs/common';
+import { Request } from 'express';
+import { Observable, tap } from 'rxjs';
 
 @Injectable()
 export class LoggingInterceptor implements NestInterceptor {
   private readonly _logger: Logger = new Logger('* LoggingInterceptor', {
-    timestamp: false
+    timestamp: false,
   });
 
   intercept(context: ExecutionContext, next: CallHandler): Observable<any> {
@@ -24,8 +24,6 @@ export class LoggingInterceptor implements NestInterceptor {
 
     return next
       .handle()
-      .pipe(tap(
-        () => this._logger.verbose(`${method} -> ${url}`)
-      ));
+      .pipe(tap(() => this._logger.verbose(`${method} -> ${url}`)));
   }
 }

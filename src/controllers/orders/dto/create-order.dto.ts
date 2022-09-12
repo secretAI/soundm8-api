@@ -1,16 +1,25 @@
-import { ApiProperty } from "@nestjs/swagger";
-import { 
+import { ApiProperty } from '@nestjs/swagger';
+import {
   IsFQDN,
-  IsIn, 
-  IsInt, 
-  IsNotEmpty, 
-  IsOptional, 
+  IsIn,
+  IsInt,
+  IsNotEmpty,
+  IsOptional,
   IsString,
   IsUrl,
-  Max, 
-  Min 
-} from "class-validator";
-import { Bitrate, Codec, CommonBitrates, Extension, KnownCodecs, KnownExtensions, PitchKey, PitchKeyList } from "../../../lib";
+  Max,
+  Min,
+} from 'class-validator';
+import {
+  Bitrate,
+  Codec,
+  CommonBitrates,
+  Extension,
+  KnownCodecs,
+  KnownExtensions,
+  PitchKey,
+  PitchKeyList,
+} from '../../../lib';
 
 export class CreateOrderDto {
   @IsUrl()
@@ -22,18 +31,18 @@ export class CreateOrderDto {
   @IsIn(PitchKeyList)
   @ApiProperty({
     enum: PitchKeyList,
-    required: false
+    required: false,
   })
   key?: PitchKey;
 
   @IsOptional()
   @IsInt()
-  @Min(30) 
+  @Min(30)
   @Max(240)
   @ApiProperty({
     minimum: 30,
     maximum: 240,
-    required: false
+    required: false,
   })
   bpm?: number;
 
@@ -46,7 +55,7 @@ export class CreateOrderDto {
   @IsIn(KnownCodecs)
   @ApiProperty({
     enum: KnownCodecs,
-    required: false
+    required: false,
   })
   codec?: Codec;
 
@@ -54,7 +63,7 @@ export class CreateOrderDto {
   @IsIn(KnownExtensions)
   @ApiProperty({
     enum: KnownExtensions,
-    required: false
+    required: false,
   })
   ext?: Extension;
 
@@ -62,7 +71,7 @@ export class CreateOrderDto {
   @IsIn(CommonBitrates)
   @ApiProperty({
     enum: CommonBitrates,
-    required: false
+    required: false,
   })
   bitrate?: Bitrate;
 }
